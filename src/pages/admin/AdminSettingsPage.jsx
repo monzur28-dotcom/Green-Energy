@@ -1,14 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStore } from '../../context/StoreContext.jsx';
-import { PAYMENTS } from '../../data.js';
+import { PAYMENTS, DEFAULT_THEME } from '../../data.js';
+
+const THEME_FIELDS = [
+  { key: 'green', label: 'Primary green' },
+  { key: 'greenD', label: 'Deep green' },
+  { key: 'green2', label: 'Mid green' },
+  { key: 'lime', label: 'Lemon-lime accent' },
+  { key: 'gold', label: 'Gold' },
+  { key: 'goldD', label: 'Deep gold' },
+];
 
 export default function AdminSettingsPage() {
   const { settings, updateSettings, changeAdminPin, resetStore } = useStore();
   const [form, setForm] = useState(settings);
+  const [themeForm, setThemeForm] = useState(settings.theme);
+  const [themeSaved, setThemeSaved] = useState(false);
+  const [themeSaving, setThemeSaving] = useState(false);
   const [pinForm, setPinForm] = useState({ current: '', next: '', confirm: '' });
   const [pinMsg, setPinMsg] = useState(null);
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => { setThemeForm(settings.theme); }, [settings.theme]);
+
+  const saveTheme = async () => {
+    setThemeSaving(true);
+    await updateSettings({ theme: themeForm });
+    setThemeSaving(false);
+    setThemeSaved(true);
+    setTimeout(() => setThemeSaved(false), 2000);
+  };
+
+  const resetTheme = () => setThemeForm(DEFAULT_THEME);
 
   const togglePayment = p => setForm(f => ({
     ...f,
@@ -65,6 +89,26 @@ export default function AdminSettingsPage() {
         <div className="ge-note">Note: bKash, Nagad, and SSLCommerz require real merchant API credentials to actually process payments — until those are connected, orders using these methods are recorded for manual confirmation, same as Cash on Delivery.</div>
 
         <button className="ge-primary" style={{ maxWidth: 200, marginTop: 20 }} onClick={saveGeneral} disabled={saving}>{saved ? 'Saved ✓' : saving ? 'Saving…' : 'Save changes'}</button>
+      </div>
+
+      <div className="ge-panel">
+        <h3>Theme colors</h3>
+        <div className="ge-note" style={{ marginBottom: 14 }}>Controls the header, footer, hero, and button gradients across the site. Changes apply instantly to everyone once saved.</div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 14 }}>
+          {THEME_FIELDS.map(f => (
+            <div key={f.key} className="ge-field" style={{ marginBottom: 0 }}>
+              <label>{f.label}</label>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <input type="color" value={themeForm[f.key]} onChange={e => setThemeForm({ ...themeForm, [f.key]: e.target.value })} style={{ width: 44, height: 38, padding: 2, flexShrink: 0 }} />
+                <input value={themeForm[f.key]} onChange={e => setThemeForm({ ...themeForm, [f.key]: e.target.value })} style={{ fontFamily: 'monospace', fontSize: 12.5 }} />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
+          <button className="ge-primary" style={{ maxWidth: 200, marginTop: 0 }} onClick={saveTheme} disabled={themeSaving}>{themeSaved ? 'Saved ✓' : themeSaving ? 'Saving…' : 'Save colors'}</button>
+          <button className="ge-secondary" style={{ maxWidth: 200, marginTop: 0 }} onClick={resetTheme}>Reset to defaults</button>
+        </div>
       </div>
 
       <div className="ge-panel">

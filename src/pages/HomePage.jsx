@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Sparkles, ShieldCheck, Truck, Wallet, CreditCard } from 'lucide-react';
 import { useStore } from '../context/StoreContext.jsx';
 import ProductCard from '../components/ProductCard.jsx';
+import MeteorEffect from '../components/MeteorEffect.jsx';
 
 const TRUST_ICONS = [ShieldCheck, Truck, Wallet, CreditCard];
 
@@ -12,13 +13,13 @@ export default function HomePage() {
   const [concern, setConcern] = useState(null);
   const [heroSlide, setHeroSlide] = useState(0);
 
-  const heroImages = useMemo(() => (content.hero.images || []).filter(Boolean), [content.hero.images]);
+  const slides = content.hero.slides || [];
 
   useEffect(() => {
-    if (heroImages.length < 2) { setHeroSlide(0); return; }
-    const t = setInterval(() => setHeroSlide(s => (s + 1) % heroImages.length), 4500);
+    if (slides.length < 2) { setHeroSlide(0); return; }
+    const t = setInterval(() => setHeroSlide(s => (s + 1) % slides.length), 4500);
     return () => clearInterval(t);
-  }, [heroImages.length]);
+  }, [slides.length]);
 
   const featured = useMemo(() => {
     const list = concern ? products.filter(p => p.concern === concern) : products;
@@ -28,17 +29,22 @@ export default function HomePage() {
   return (
     <div className="ge-wrap">
       <div className="ge-hero">
-        {heroImages.map((img, i) => (
-          <div key={i} className={'ge-heroslide' + (i === heroSlide ? ' on' : '')} style={{ backgroundImage: `url(${img})` }} />
+        {slides.map((s, i) => s.image && (
+          <div key={i} className={'ge-heroslide' + (i === heroSlide ? ' on' : '')} style={{ backgroundImage: `url(${s.image})` }} />
         ))}
-        {heroImages.length > 0 && <div className="ge-herooverlay" />}
-        <div className="eyebrow">{content.hero.eyebrow}</div>
-        <h1>{content.hero.title}</h1>
-        <p>{content.hero.subtitle}</p>
-        {content.hero.cta && <Link className="cta" to="/shop?cat=skincare">{content.hero.cta}</Link>}
-        {heroImages.length > 1 && (
+        {slides.some(s => s.image) && <div className="ge-herooverlay" style={{ opacity: content.hero.overlayOpacity ?? 0.7 }} />}
+        <MeteorEffect />
+        {slides.map((s, i) => (
+          <div key={i} className={'ge-herotext' + (i === heroSlide ? ' on' : '')}>
+            <div className="eyebrow">{s.eyebrow}</div>
+            <h1>{s.title}</h1>
+            <p>{s.subtitle}</p>
+            {s.cta && <Link className="cta" to="/shop">{s.cta}</Link>}
+          </div>
+        ))}
+        {slides.length > 1 && (
           <div className="ge-herodots">
-            {heroImages.map((_, i) => <button key={i} className={'ge-herodot' + (i === heroSlide ? ' on' : '')} onClick={() => setHeroSlide(i)} aria-label={`Slide ${i + 1}`} />)}
+            {slides.map((_, i) => <button key={i} className={'ge-herodot' + (i === heroSlide ? ' on' : '')} onClick={() => setHeroSlide(i)} aria-label={`Slide ${i + 1}`} />)}
           </div>
         )}
       </div>

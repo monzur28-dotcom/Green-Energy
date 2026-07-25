@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, NavLink, useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { Search, ShoppingCart, Heart, Leaf, Menu, User, Package, LogOut, LayoutDashboard } from 'lucide-react';
 import { useStore } from '../context/StoreContext.jsx';
+import MeteorEffect from './MeteorEffect.jsx';
 
 export default function Header() {
   const { content, categories, cartCount, wishlistCount, currentUser, logout, openCart } = useStore();
@@ -29,6 +30,7 @@ export default function Header() {
       </div>
 
       <header className="ge-header">
+        <MeteorEffect />
         <div className="ge-hrow">
           <button className="ge-menubtn" onClick={() => setMobileNav(m => !m)} aria-label="Menu"><Menu size={20} /></button>
           <Link to="/" className="ge-brand"><span className="lf"><Leaf size={20} /></span><span>{content.brand.name}<small>{content.brand.tagline}</small></span></Link>
@@ -41,7 +43,7 @@ export default function Header() {
 
           <form className="ge-search" onSubmit={submitSearch}>
             <Search size={18} color="#6d766c" />
-            <input placeholder={content.search.placeholder} value={query} onChange={e => setQuery(e.target.value)} />
+            <input name="q" id="site-search" placeholder={content.search.placeholder} value={query} onChange={e => setQuery(e.target.value)} />
           </form>
 
           <div className="ge-icons">

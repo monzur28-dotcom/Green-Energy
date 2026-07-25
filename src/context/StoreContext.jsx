@@ -1,8 +1,10 @@
 import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
 import { api } from '../api.js';
 import { iconFor } from '../icons.js';
+import { DEFAULT_THEME } from '../data.js';
 
 const ALL_CATEGORY = { id: 'all', name: 'All', icon: 'Sparkles', tint: '#e9f4ee', fg: '#14532d', subs: [] };
+const THEME_VARS = { green: '--green', greenD: '--green-d', green2: '--green-2', lime: '--lime', gold: '--gold', goldD: '--gold-d' };
 
 const StoreCtx = createContext(null);
 
@@ -71,6 +73,15 @@ export function StoreProvider({ children }) {
 
   useEffect(() => { if (loaded) write('ge_cart', cart); }, [cart, loaded]);
   useEffect(() => { if (loaded) write('ge_wishlist', wishlist); }, [wishlist, loaded]);
+
+  // Apply admin-editable brand colors as CSS custom properties, overriding theme.css's defaults live.
+  useEffect(() => {
+    if (!settings?.theme) return;
+    const root = document.documentElement;
+    for (const [key, cssVar] of Object.entries(THEME_VARS)) {
+      if (settings.theme[key]) root.style.setProperty(cssVar, settings.theme[key]);
+    }
+  }, [settings?.theme]);
 
   // fetch admin-only data once admin session is confirmed
   useEffect(() => {
@@ -225,7 +236,7 @@ export function StoreProvider({ children }) {
     concerns, addConcern, removeConcern, renameConcern,
     brands, addBrand, editBrand, removeBrand,
     content: content || { brand: {}, nav: {}, search: {}, topbar: {}, hero: {}, homepage: {}, footer: {} }, setSection,
-    settings: settings || { freeShipThreshold: 999, shipDhaka: 60, shipOutside: 120, enabledPayments: ['Cash on Delivery'], adminPin: '' },
+    settings: settings || { freeShipThreshold: 999, shipDhaka: 60, shipOutside: 120, enabledPayments: ['Cash on Delivery'], adminPin: '', theme: DEFAULT_THEME },
     updateSettings, changeAdminPin,
     cart, cartItems, cartCount, subtotal, freeShip, addToCart, setQty, clearCart, shippingFor,
     wishlist, wishlistItems, wishlistCount, toggleWishlist,

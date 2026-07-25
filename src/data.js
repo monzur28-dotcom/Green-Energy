@@ -51,6 +51,17 @@ export const ORDER_STATUSES = ['Pending', 'Processing', 'Shipped', 'Delivered', 
 export const taka = n => '৳' + Number(n || 0).toLocaleString('en-US');
 export const pctOff = p => (p.mrp > p.price ? Math.round((1 - p.price / p.mrp) * 100) : 0);
 
+// CSS custom property name -> key here (e.g. --green-d -> greenD). Applied at runtime
+// in App.jsx so admin edits take effect without a redeploy.
+export const DEFAULT_THEME = {
+  green: '#14532d',
+  greenD: '#0a2f1c',
+  green2: '#2f8f5e',
+  lime: '#bfd100',
+  gold: '#d9a441',
+  goldD: '#b8860b',
+};
+
 export const DEFAULT_SETTINGS = {
   adminPin: '1234',
   freeShipThreshold: 999,
@@ -58,6 +69,7 @@ export const DEFAULT_SETTINGS = {
   shipOutside: 120,
   currency: '৳',
   enabledPayments: ['Cash on Delivery', 'bKash', 'Nagad', 'SSLCommerz'],
+  theme: DEFAULT_THEME,
 };
 
 export const DEFAULT_CONTENT = {
@@ -66,14 +78,15 @@ export const DEFAULT_CONTENT = {
   search: { placeholder: 'Search brands & products — serum, sunscreen, lipstick…' },
   topbar: { promo: '🌿 100% original · clean beauty & personal care · delivery: Dhaka 2 days, outside 3–5 days', hotline: '16xxx' },
   hero: {
-    eyebrow: 'Clean beauty · Big brands',
-    title: 'Glow up with authentic beauty & personal care.',
-    subtitle: '100% original products from the brands you love — with fast delivery and free shipping over ৳999.',
-    cta: 'Shop skincare',
-    images: [
-      'https://picsum.photos/1200/700?random=101',
-      'https://picsum.photos/1200/700?random=102',
-      'https://picsum.photos/1200/700?random=103',
+    overlayOpacity: 0.7,
+    slides: [
+      {
+        image: 'https://picsum.photos/1200/700?random=101',
+        eyebrow: 'Clean beauty · Big brands',
+        title: 'Glow up with authentic beauty & personal care.',
+        subtitle: '100% original products from the brands you love — with fast delivery and free shipping over ৳999.',
+        cta: 'Shop skincare',
+      },
     ],
   },
   homepage: {
@@ -103,3 +116,5 @@ export const blankProduct = () => ({
   id: Date.now(), brand: '', name: 'New product', cat: 'skincare', sub: '',
   price: 0, mrp: 0, rating: 4.5, reviews: 0, tag: '', concern: '', image: '', sold: false, stock: 100,
 });
+
+export const blankHeroSlide = () => ({ image: '', eyebrow: '', title: 'New headline', subtitle: '', cta: '' });

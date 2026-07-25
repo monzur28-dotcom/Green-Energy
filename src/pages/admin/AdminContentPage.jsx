@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Upload } from 'lucide-react';
+import { Upload, Plus, Trash2 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext.jsx';
+import { blankHeroSlide } from '../../data.js';
 import CategoriesManager from './CategoriesManager.jsx';
 import ConcernsManager from './ConcernsManager.jsx';
 import BrandsManager from './BrandsManager.jsx';
@@ -33,8 +34,10 @@ export default function AdminContentPage() {
   const saveTopbar = async () => { await setSection('topbar', topbar); flash('Top bar'); };
   const saveFooter = async () => { await setSection('footer', footer); flash('Footer'); };
 
-  const heroImgs = hero.images || ['', '', ''];
-  const setHeroImg = (i, v) => { const next = [...heroImgs]; next[i] = v; setHero({ ...hero, images: next }); };
+  const heroSlides = hero.slides || [];
+  const updateSlide = (i, patch) => { const next = [...heroSlides]; next[i] = { ...next[i], ...patch }; setHero({ ...hero, slides: next }); };
+  const addSlide = () => setHero({ ...hero, slides: [...heroSlides, blankHeroSlide()] });
+  const removeSlide = i => { if (heroSlides.length <= 1) return; setHero({ ...hero, slides: heroSlides.filter((_, idx) => idx !== i) }); };
 
   const badges = homepage.trustBadges || [];
   const setBadge = (i, patch) => { const next = [...badges]; next[i] = { ...next[i], ...patch }; setHomepage({ ...homepage, trustBadges: next }); };
@@ -73,27 +76,49 @@ export default function AdminContentPage() {
 
       {tab === 'Hero' && (
         <div className="ge-panel">
-          <h3>Hero section</h3>
-          <div className="ge-field"><label>Small label (eyebrow)</label><input value={hero.eyebrow} onChange={e => setHero({ ...hero, eyebrow: e.target.value })} /></div>
-          <div className="ge-field"><label>Headline</label><input value={hero.title} onChange={e => setHero({ ...hero, title: e.target.value })} /></div>
-          <div className="ge-field"><label>Subtext</label><input value={hero.subtitle} onChange={e => setHero({ ...hero, subtitle: e.target.value })} /></div>
-          <div className="ge-field"><label>Button text</label><input value={hero.cta} onChange={e => setHero({ ...hero, cta: e.target.value })} placeholder="Leave blank to hide the button" /></div>
-          <div className="ge-field">
-            <label>Background images (up to 3 — they auto-rotate)</label>
-            {[0, 1, 2].map(i => (
-              <div key={i} style={{ marginBottom: 10 }}>
-                <input value={heroImgs[i] || ''} onChange={e => setHeroImg(i, e.target.value)} placeholder={`Image ${i + 1} URL…`} />
+          <h3>Hero posters</h3>
+          <div className="ge-note" style={{ marginBottom: 18 }}>
+            Each poster has its own photo and its own headline — they auto-rotate every few seconds. Add as many as you like, there's no fixed limit.
+            Pasting an image URL is more reliable than uploading, especially once you have several posters — uploaded photos are embedded directly in the save, and many/large uploads can exceed the server's request size limit.
+          </div>
+
+          {heroSlides.map((slide, i) => (
+            <div key={i} style={{ border: '1px solid var(--line)', borderRadius: 14, padding: 16, marginBottom: 14 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <b style={{ fontFamily: "'Outfit',sans-serif" }}>Poster {i + 1}</b>
+                <button className="ge-tblbtn danger" onClick={() => removeSlide(i)} disabled={heroSlides.length <= 1}><Trash2 size={12} /> Remove</button>
+              </div>
+              <div className="ge-field">
+                <label>Photo</label>
+                <input value={slide.image || ''} onChange={e => updateSlide(i, { image: e.target.value })} placeholder="Paste an image URL…" />
                 <div className="ge-editrow">
                   <label className="ge-upload"><Upload size={13} /> Upload from device
-                    <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => { const f = e.target.files && e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => setHeroImg(i, r.result); r.readAsDataURL(f); }} />
+                    <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => { const f = e.target.files && e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => updateSlide(i, { image: r.result }); r.readAsDataURL(f); }} />
                   </label>
-                  {heroImgs[i] && <button className="ge-clear" onClick={() => setHeroImg(i, '')}>Remove image</button>}
+                  {slide.image && <button className="ge-clear" onClick={() => updateSlide(i, { image: '' })}>Remove photo</button>}
                 </div>
               </div>
-            ))}
-            <div className="ge-note">A green overlay keeps your text readable on top of the photos.</div>
+              <div className="ge-field"><label>Small label (eyebrow)</label><input value={slide.eyebrow} onChange={e => updateSlide(i, { eyebrow: e.target.value })} /></div>
+              <div className="ge-field"><label>Headline</label><input value={slide.title} onChange={e => updateSlide(i, { title: e.target.value })} /></div>
+              <div className="ge-field"><label>Subtext</label><input value={slide.subtitle} onChange={e => updateSlide(i, { subtitle: e.target.value })} /></div>
+              <div className="ge-field" style={{ marginBottom: 0 }}><label>Button text</label><input value={slide.cta} onChange={e => updateSlide(i, { cta: e.target.value })} placeholder="Leave blank to hide the button" /></div>
+            </div>
+          ))}
+
+          <button className="ge-addtile" style={{ minHeight: 70, marginBottom: 22 }} onClick={addSlide}><Plus size={20} /><span>Add poster</span></button>
+
+          <div className="ge-field" style={{ maxWidth: 380 }}>
+            <label>Overlay darkness — {Math.round((hero.overlayOpacity ?? 0.7) * 100)}%</label>
+            <input
+              type="range" min="0" max="1" step="0.05"
+              value={hero.overlayOpacity ?? 0.7}
+              onChange={e => setHero({ ...hero, overlayOpacity: Number(e.target.value) })}
+              style={{ width: '100%', accentColor: 'var(--green)' }}
+            />
+            <div className="ge-note">A green overlay keeps your text readable on top of the photos. Lower this to let the photos show through more clearly; raise it if the text gets hard to read.</div>
           </div>
-          <button className="ge-primary" style={{ maxWidth: 200 }} onClick={saveHero}>{savedTab === 'Hero' ? 'Saved ✓' : 'Save hero'}</button>
+
+          <button className="ge-primary" style={{ maxWidth: 200 }} onClick={saveHero}>{savedTab === 'Hero' ? 'Saved ✓' : 'Save all posters'}</button>
         </div>
       )}
 

@@ -162,6 +162,7 @@ app.get('/api/settings', async (req, res) => res.json(settingsPublic(await getSe
 app.put('/api/settings', requireAdmin, async (req, res) => {
   const settings = await getSettings();
   const { adminPin, ...patch } = req.body; // PIN changes only via /settings/pin
+  if (patch.theme) patch.theme = { ...settings.theme, ...patch.theme }; // nested object: merge, don't replace
   const next = { ...settings, ...patch };
   await setSettings(next);
   res.json(settingsPublic(next));

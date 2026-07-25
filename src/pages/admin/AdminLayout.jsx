@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavLink, Outlet, useNavigate, Link } from 'react-router-dom';
 import { LayoutDashboard, Package, ShoppingBag, Users, FileEdit, Settings, LogOut, Leaf, Menu, ExternalLink } from 'lucide-react';
 import { useStore } from '../../context/StoreContext.jsx';
+import MeteorEffect from '../../components/MeteorEffect.jsx';
 
 const LINKS = [
   { to: '/admin', end: true, Icon: LayoutDashboard, label: 'Overview' },
@@ -20,6 +21,7 @@ export default function AdminLayout() {
   return (
     <div className="ge-admroot">
       <aside className={'ge-admsidebar' + (open ? ' open' : '')} onClick={e => { if (e.target === e.currentTarget) setOpen(false); }}>
+        <MeteorEffect />
         <div className="ge-admbrand"><span className="lf"><Leaf size={18} /></span> Green Energy</div>
         <nav className="ge-admnav">
           {LINKS.map(l => (
