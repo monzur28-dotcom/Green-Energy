@@ -122,6 +122,7 @@ export async function updateProduct(id, patch) {
 
 export async function deleteProduct(id) { db.prepare('DELETE FROM products WHERE id = ?').run(id); }
 export async function resetProducts(seedList) { seedProducts(seedList); }
+export async function renameConcernOnProducts(oldLabel, newLabel) { db.prepare('UPDATE products SET concern = ? WHERE concern = ?').run(newLabel, oldLabel); }
 
 export async function getContent() { return kvGetRaw('content', DEFAULT_CONTENT); }
 export async function setContent(content) { kvSetRaw('content', content); }

@@ -128,6 +128,11 @@ export function StoreProvider({ children }) {
   // ---- concerns ----
   const addConcern = async label => { const next = await api.post('/concerns', { label }, adminToken); setConcerns(next); };
   const removeConcern = async label => { await api.del(`/concerns/${encodeURIComponent(label)}`, adminToken); setConcerns(list => list.filter(c => c !== label)); };
+  const renameConcern = async (oldLabel, newLabel) => {
+    const next = await api.put(`/concerns/${encodeURIComponent(oldLabel)}`, { label: newLabel }, adminToken);
+    setConcerns(next);
+    setProducts(await api.get('/products')); // product.concern values may have been reassigned server-side
+  };
 
   // ---- brands (homepage strip) ----
   const addBrand = async ({ name, off }) => { const next = await api.post('/brands', { name, off }, adminToken); setBrands(next); };
@@ -217,7 +222,7 @@ export function StoreProvider({ children }) {
     loaded, loadError,
     products, upsertProduct, removeProduct,
     categories, CAT, addCategory, editCategory, removeCategory,
-    concerns, addConcern, removeConcern,
+    concerns, addConcern, removeConcern, renameConcern,
     brands, addBrand, editBrand, removeBrand,
     content: content || { brand: {}, nav: {}, search: {}, topbar: {}, hero: {}, homepage: {}, footer: {} }, setSection,
     settings: settings || { freeShipThreshold: 999, shipDhaka: 60, shipOutside: 120, enabledPayments: ['Cash on Delivery'], adminPin: '' },

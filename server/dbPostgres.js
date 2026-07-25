@@ -142,6 +142,7 @@ export async function resetProducts(seedList) {
   const client = await pool.connect();
   try { await seedProducts(client, seedList); } finally { client.release(); }
 }
+export async function renameConcernOnProducts(oldLabel, newLabel) { await q('UPDATE products SET concern = $1 WHERE concern = $2', [newLabel, oldLabel]); }
 
 export async function getContent() { const { rows } = await q('SELECT value FROM kv WHERE key = $1', ['content']); return rows[0] ? rows[0].value : null; }
 export async function setContent(content) { await q('INSERT INTO kv (key, value) VALUES ($1,$2) ON CONFLICT (key) DO UPDATE SET value = excluded.value', ['content', JSON.stringify(content)]); }

@@ -9,7 +9,7 @@ const impl = driver === 'postgres' ? await import('./dbPostgres.js') : await imp
 console.log(`[db] using ${driver} driver`);
 
 export const {
-  init, listProducts, getProductById, insertProduct, updateProduct, deleteProduct, resetProducts,
+  init, listProducts, getProductById, insertProduct, updateProduct, deleteProduct, resetProducts, renameConcernOnProducts,
   setContent, getSettings, setSettings,
   createUser, getUserByEmail, getUserById, listUsers,
   createSessionRow, getSessionRow, deleteSessionRow,

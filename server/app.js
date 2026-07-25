@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import {
   PRODUCTS, DEFAULT_CONTENT, DEFAULT_SETTINGS, DEFAULT_CATEGORIES, DEFAULT_CONCERNS, DEFAULT_BRANDS,
-  listProducts, getProductById, insertProduct, updateProduct, deleteProduct, resetProducts,
+  listProducts, getProductById, insertProduct, updateProduct, deleteProduct, resetProducts, renameConcernOnProducts,
   getContent, setContent, getSettings, setSettings,
   createUser, getUserByEmail, getUserById, listUsers,
   listOrders, listOrdersByUser, getOrderById, placeOrderTx, updateOrderStatusRow,
@@ -95,6 +95,19 @@ app.delete('/api/concerns/:label', requireAdmin, async (req, res) => {
   const list = await getConcerns();
   await setConcerns(list.filter(c => c !== label));
   res.status(204).end();
+});
+
+app.put('/api/concerns/:label', requireAdmin, async (req, res) => {
+  const oldLabel = decodeURIComponent(req.params.label);
+  const newLabel = (req.body.label || '').trim();
+  if (!newLabel) return res.status(400).json({ error: 'Concern name is required.' });
+  const list = await getConcerns();
+  if (!list.includes(oldLabel)) return res.status(404).json({ error: 'Concern not found.' });
+  if (newLabel !== oldLabel && list.includes(newLabel)) return res.status(409).json({ error: 'That concern already exists.' });
+  const next = list.map(c => c === oldLabel ? newLabel : c);
+  await setConcerns(next);
+  await renameConcernOnProducts(oldLabel, newLabel);
+  res.json(next);
 });
 
 // ---------- brands (homepage "Top brands" strip) ----------
