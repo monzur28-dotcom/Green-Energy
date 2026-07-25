@@ -2,11 +2,12 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Sparkles, ShieldCheck, Truck, Wallet, CreditCard } from 'lucide-react';
 import { useStore } from '../context/StoreContext.jsx';
-import { CONCERNS, BRANDS } from '../data.js';
 import ProductCard from '../components/ProductCard.jsx';
 
+const TRUST_ICONS = [ShieldCheck, Truck, Wallet, CreditCard];
+
 export default function HomePage() {
-  const { content, products, settings } = useStore();
+  const { content, products, concerns, brands } = useStore();
   const navigate = useNavigate();
   const [concern, setConcern] = useState(null);
   const [heroSlide, setHeroSlide] = useState(0);
@@ -43,25 +44,25 @@ export default function HomePage() {
       </div>
 
       <div className="ge-concern">
-        <div className="lab"><Sparkles size={16} color="#14532d" /> Shop by concern</div>
+        <div className="lab"><Sparkles size={16} color="#14532d" /> {content.homepage.concernLabel}</div>
         <div className="ge-cchips">
-          {CONCERNS.map(cc => (
+          {concerns.map(cc => (
             <button key={cc} className={'ge-cchip' + (concern === cc ? ' on' : '')} onClick={() => setConcern(concern === cc ? null : cc)}>{cc}</button>
           ))}
         </div>
       </div>
 
       <div className="ge-trust">
-        <div><div className="ic"><ShieldCheck size={20} /></div><div><b>100% Original</b><span>Sourced directly</span></div></div>
-        <div><div className="ic"><Truck size={20} /></div><div><b>Free Shipping</b><span>On orders over ৳{settings.freeShipThreshold}</span></div></div>
-        <div><div className="ic"><Wallet size={20} /></div><div><b>Cash on Delivery</b><span>Order now, pay later</span></div></div>
-        <div><div className="ic"><CreditCard size={20} /></div><div><b>Digital Payments</b><span>bKash · Nagad · SSLCommerz</span></div></div>
+        {(content.homepage.trustBadges || []).map((b, i) => {
+          const Icon = TRUST_ICONS[i] || ShieldCheck;
+          return <div key={i}><div className="ic"><Icon size={20} /></div><div><b>{b.title}</b><span>{b.subtitle}</span></div></div>;
+        })}
       </div>
 
-      <div className="ge-sech">Top brands</div>
-      <div className="ge-secsub">Curated names, big savings</div>
+      <div className="ge-sech">{content.homepage.brandsHeading}</div>
+      <div className="ge-secsub">{content.homepage.brandsSubheading}</div>
       <div className="ge-brandstrip">
-        {BRANDS.map(b => (
+        {brands.map(b => (
           <div key={b.name} className="ge-btile" onClick={() => navigate(`/shop?q=${encodeURIComponent(b.name)}`)}>
             <div className="bn">{b.name}</div>
             <div className="bo">{b.off}</div>

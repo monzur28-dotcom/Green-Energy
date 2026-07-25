@@ -1,12 +1,13 @@
 import express from 'express';
 import cors from 'cors';
 import {
-  PRODUCTS, DEFAULT_CONTENT, DEFAULT_SETTINGS, DEFAULT_CATEGORIES,
+  PRODUCTS, DEFAULT_CONTENT, DEFAULT_SETTINGS, DEFAULT_CATEGORIES, DEFAULT_CONCERNS, DEFAULT_BRANDS,
   listProducts, getProductById, insertProduct, updateProduct, deleteProduct, resetProducts,
   getContent, setContent, getSettings, setSettings,
   createUser, getUserByEmail, getUserById, listUsers,
   listOrders, listOrdersByUser, getOrderById, placeOrderTx, updateOrderStatusRow,
   listCategories, getCategoryById, insertCategory, updateCategory, deleteCategoryRow, countProductsInCategory, resetCategories,
+  getConcerns, setConcerns, getBrands, setBrands, countProductsWithConcern,
 } from './db.js';
 import { hashPassword, verifyPassword, createSession, destroySession, getSession, requireAdmin, requireUser, optionalUser } from './auth.js';
 import { slugify, CATEGORY_PALETTE } from '../src/icons.js';
@@ -74,6 +75,58 @@ app.delete('/api/categories/:id', requireAdmin, async (req, res) => {
   res.status(204).end();
 });
 
+// ---------- concerns ----------
+app.get('/api/concerns', async (req, res) => res.json(await getConcerns()));
+
+app.post('/api/concerns', requireAdmin, async (req, res) => {
+  const label = (req.body.label || '').trim();
+  if (!label) return res.status(400).json({ error: 'Concern name is required.' });
+  const list = await getConcerns();
+  if (list.includes(label)) return res.status(409).json({ error: 'That concern already exists.' });
+  const next = [...list, label];
+  await setConcerns(next);
+  res.status(201).json(next);
+});
+
+app.delete('/api/concerns/:label', requireAdmin, async (req, res) => {
+  const label = decodeURIComponent(req.params.label);
+  const count = await countProductsWithConcern(label);
+  if (count > 0) return res.status(409).json({ error: `${count} product${count === 1 ? '' : 's'} still use this concern. Reassign or delete them first.` });
+  const list = await getConcerns();
+  await setConcerns(list.filter(c => c !== label));
+  res.status(204).end();
+});
+
+// ---------- brands (homepage "Top brands" strip) ----------
+app.get('/api/brands', async (req, res) => res.json(await getBrands()));
+
+app.post('/api/brands', requireAdmin, async (req, res) => {
+  const name = (req.body.name || '').trim();
+  if (!name) return res.status(400).json({ error: 'Brand name is required.' });
+  const list = await getBrands();
+  const next = [...list, { name, off: req.body.off || '' }];
+  await setBrands(next);
+  res.status(201).json(next);
+});
+
+app.put('/api/brands/:index', requireAdmin, async (req, res) => {
+  const i = Number(req.params.index);
+  const list = await getBrands();
+  if (!list[i]) return res.status(404).json({ error: 'Brand not found.' });
+  list[i] = { name: req.body.name ?? list[i].name, off: req.body.off ?? list[i].off };
+  await setBrands(list);
+  res.json(list);
+});
+
+app.delete('/api/brands/:index', requireAdmin, async (req, res) => {
+  const i = Number(req.params.index);
+  const list = await getBrands();
+  if (!list[i]) return res.status(404).json({ error: 'Brand not found.' });
+  list.splice(i, 1);
+  await setBrands(list);
+  res.status(204).end();
+});
+
 // ---------- content / settings ----------
 app.get('/api/content', async (req, res) => res.json(await getContent()));
 
@@ -113,6 +166,8 @@ app.post('/api/settings/pin', requireAdmin, async (req, res) => {
 app.post('/api/admin/reset', requireAdmin, async (req, res) => {
   await resetProducts(PRODUCTS);
   await resetCategories(DEFAULT_CATEGORIES);
+  await setConcerns(DEFAULT_CONCERNS);
+  await setBrands(DEFAULT_BRANDS);
   const settings = await getSettings();
   await setContent(DEFAULT_CONTENT);
   await setSettings({ ...DEFAULT_SETTINGS, adminPin: settings.adminPin });

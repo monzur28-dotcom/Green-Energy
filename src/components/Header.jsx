@@ -31,17 +31,17 @@ export default function Header() {
       <header className="ge-header">
         <div className="ge-hrow">
           <button className="ge-menubtn" onClick={() => setMobileNav(m => !m)} aria-label="Menu"><Menu size={20} /></button>
-          <Link to="/" className="ge-brand"><span className="lf"><Leaf size={20} /></span><span>Green Energy<small>Beauty &amp; Care</small></span></Link>
+          <Link to="/" className="ge-brand"><span className="lf"><Leaf size={20} /></span><span>{content.brand.name}<small>{content.brand.tagline}</small></span></Link>
 
           <nav className="ge-navlinks">
-            <NavLink to="/" end className={({ isActive }) => isActive ? 'active' : ''}>Home</NavLink>
-            <NavLink to="/shop" className={({ isActive }) => isActive ? 'active' : ''}>Shop</NavLink>
-            <NavLink to="/track-order" className={({ isActive }) => isActive ? 'active' : ''}>Track Order</NavLink>
+            <NavLink to="/" end className={({ isActive }) => isActive ? 'active' : ''}>{content.nav.home}</NavLink>
+            <NavLink to="/shop" className={({ isActive }) => isActive ? 'active' : ''}>{content.nav.shop}</NavLink>
+            <NavLink to="/track-order" className={({ isActive }) => isActive ? 'active' : ''}>{content.nav.trackOrder}</NavLink>
           </nav>
 
           <form className="ge-search" onSubmit={submitSearch}>
             <Search size={18} color="#6d766c" />
-            <input placeholder="Search brands & products — serum, sunscreen, lipstick…" value={query} onChange={e => setQuery(e.target.value)} />
+            <input placeholder={content.search.placeholder} value={query} onChange={e => setQuery(e.target.value)} />
           </form>
 
           <div className="ge-icons">
@@ -79,9 +79,9 @@ export default function Header() {
 
         {mobileNav && (
           <nav className="ge-navlinks" style={{ display: 'flex', flexDirection: 'column', maxWidth: 1240, margin: '10px auto 0', padding: '0 4px' }}>
-            <NavLink to="/" end onClick={() => setMobileNav(false)}>Home</NavLink>
-            <NavLink to="/shop" onClick={() => setMobileNav(false)}>Shop</NavLink>
-            <NavLink to="/track-order" onClick={() => setMobileNav(false)}>Track Order</NavLink>
+            <NavLink to="/" end onClick={() => setMobileNav(false)}>{content.nav.home}</NavLink>
+            <NavLink to="/shop" onClick={() => setMobileNav(false)}>{content.nav.shop}</NavLink>
+            <NavLink to="/track-order" onClick={() => setMobileNav(false)}>{content.nav.trackOrder}</NavLink>
           </nav>
         )}
       </header>

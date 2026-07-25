@@ -9,7 +9,8 @@ export const DEFAULT_CATEGORIES = [
   { id: 'fragrance', name: 'Fragrance', icon: 'Wind', tint: '#f2ecfb', fg: '#8b5bd1', subs: ['Men', 'Women', 'Body Mist'] },
   { id: 'baby', name: 'Baby Care', icon: 'Baby', tint: '#eaf6fb', fg: '#2f9ad1', subs: ['Baby Wash', 'Baby Lotion'] },
 ];
-export const CONCERNS = ['Acne', 'Brightening', 'Anti-Ageing', 'Hydration', 'Sun Protection', 'Hair Fall'];
+// Seed only — live editable via /api/concerns (see StoreContext).
+export const DEFAULT_CONCERNS = ['Acne', 'Brightening', 'Anti-Ageing', 'Hydration', 'Sun Protection', 'Hair Fall'];
 
 export const PRODUCTS = [
   { id: 1, brand: 'Zayn & Myza', name: 'Vitamin C Face Serum (30ml)', cat: 'skincare', sub: 'Serums', concern: 'Brightening', price: 999, mrp: 1398, rating: 4.6, reviews: 120, tag: 'Bestseller' },
@@ -36,7 +37,8 @@ export const PRODUCTS = [
   { id: 22, brand: 'Skin Cafe', name: 'Niacinamide Day Cream (50g)', cat: 'skincare', sub: 'Moisturizers', concern: 'Anti-Ageing', price: 848, mrp: 1198, rating: 4.5, reviews: 40, sold: true },
 ];
 
-export const BRANDS = [
+// Seed only — live editable via /api/brands (see StoreContext).
+export const DEFAULT_BRANDS = [
   { name: 'Lafz', off: 'up to 65% off' }, { name: 'Zayn & Myza', off: 'up to 50% off' },
   { name: 'The Ordinary', off: 'up to 45% off' }, { name: 'CeraVe', off: 'up to 30% off' },
   { name: 'COSRX', off: 'up to 40% off' }, { name: 'Skin Cafe', off: 'up to 30% off' },
@@ -59,6 +61,9 @@ export const DEFAULT_SETTINGS = {
 };
 
 export const DEFAULT_CONTENT = {
+  brand: { name: 'Green Energy', tagline: 'Beauty & Care' },
+  nav: { home: 'Home', shop: 'Shop', trackOrder: 'Track Order' },
+  search: { placeholder: 'Search brands & products — serum, sunscreen, lipstick…' },
   topbar: { promo: '🌿 100% original · clean beauty & personal care · delivery: Dhaka 2 days, outside 3–5 days', hotline: '16xxx' },
   hero: {
     eyebrow: 'Clean beauty · Big brands',
@@ -71,6 +76,17 @@ export const DEFAULT_CONTENT = {
       'https://picsum.photos/1200/700?random=103',
     ],
   },
+  homepage: {
+    concernLabel: 'Shop by concern',
+    trustBadges: [
+      { title: '100% Original', subtitle: 'Sourced directly' },
+      { title: 'Free Shipping', subtitle: 'On orders over ৳999' },
+      { title: 'Cash on Delivery', subtitle: 'Order now, pay later' },
+      { title: 'Digital Payments', subtitle: 'bKash · Nagad · SSLCommerz' },
+    ],
+    brandsHeading: 'Top brands',
+    brandsSubheading: 'Curated names, big savings',
+  },
   footer: {
     blurb: 'Authentic, clean beauty & personal care delivered across Bangladesh. 100% original products, always.',
     address: 'House 80, Road 15, Banani, Dhaka 1213',
@@ -78,6 +94,8 @@ export const DEFAULT_CONTENT = {
     email: 'support@greenenergy.com',
     hours: 'Open daily · 8:00am – 10:00pm',
     facebook: '#', instagram: '#', youtube: '#',
+    shopHeading: 'Shop', helpHeading: 'Help', contactHeading: 'Contact',
+    copyrightText: 'Green Energy. All rights reserved.',
   },
 };
 

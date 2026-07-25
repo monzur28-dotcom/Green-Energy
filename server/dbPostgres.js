@@ -1,5 +1,5 @@
 import pg from 'pg';
-import { PRODUCTS, DEFAULT_CONTENT, DEFAULT_SETTINGS, DEFAULT_CATEGORIES } from '../src/data.js';
+import { PRODUCTS, DEFAULT_CONTENT, DEFAULT_SETTINGS, DEFAULT_CATEGORIES, DEFAULT_CONCERNS, DEFAULT_BRANDS } from '../src/data.js';
 
 // Return BIGINT and NUMERIC as JS numbers (safe here: ids are Date.now()-based,
 // well under Number.MAX_SAFE_INTEGER, and money values don't need arbitrary precision).
@@ -104,6 +104,7 @@ export async function updateCategory(id, patch) {
 }
 export async function deleteCategoryRow(id) { await q('DELETE FROM categories WHERE id = $1', [id]); }
 export async function countProductsInCategory(id) { const { rows } = await q('SELECT COUNT(*)::int AS n FROM products WHERE cat = $1', [id]); return rows[0].n; }
+export async function countProductsWithConcern(concern) { const { rows } = await q('SELECT COUNT(*)::int AS n FROM products WHERE concern = $1', [concern]); return rows[0].n; }
 export async function resetCategories(seedList) {
   const client = await pool.connect();
   try { await seedCategories(client, seedList); } finally { client.release(); }
@@ -146,6 +147,10 @@ export async function getContent() { const { rows } = await q('SELECT value FROM
 export async function setContent(content) { await q('INSERT INTO kv (key, value) VALUES ($1,$2) ON CONFLICT (key) DO UPDATE SET value = excluded.value', ['content', JSON.stringify(content)]); }
 export async function getSettings() { const { rows } = await q('SELECT value FROM kv WHERE key = $1', ['settings']); return rows[0] ? rows[0].value : null; }
 export async function setSettings(settings) { await q('INSERT INTO kv (key, value) VALUES ($1,$2) ON CONFLICT (key) DO UPDATE SET value = excluded.value', ['settings', JSON.stringify(settings)]); }
+export async function getConcerns() { const { rows } = await q('SELECT value FROM kv WHERE key = $1', ['concerns']); return rows[0] ? rows[0].value : DEFAULT_CONCERNS; }
+export async function setConcerns(list) { await q('INSERT INTO kv (key, value) VALUES ($1,$2) ON CONFLICT (key) DO UPDATE SET value = excluded.value', ['concerns', JSON.stringify(list)]); }
+export async function getBrands() { const { rows } = await q('SELECT value FROM kv WHERE key = $1', ['brands']); return rows[0] ? rows[0].value : DEFAULT_BRANDS; }
+export async function setBrands(list) { await q('INSERT INTO kv (key, value) VALUES ($1,$2) ON CONFLICT (key) DO UPDATE SET value = excluded.value', ['brands', JSON.stringify(list)]); }
 
 const userRow = r => r && ({ id: r.id, name: r.name, email: r.email, phone: r.phone, passHash: r.pass_hash, passSalt: r.pass_salt, createdAt: r.created_at });
 

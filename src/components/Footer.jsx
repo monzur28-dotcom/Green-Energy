@@ -11,7 +11,7 @@ export default function Footer() {
     <footer className="ge-footer">
       <div className="ge-finner">
         <div className="ge-fcol ge-fbrand">
-          <Link to="/" className="ge-brand" style={{ color: '#fff' }}><span className="lf"><Leaf size={20} /></span><span>Green Energy<small style={{ color: '#a9cdb8' }}>Beauty &amp; Care</small></span></Link>
+          <Link to="/" className="ge-brand" style={{ color: '#fff' }}><span className="lf"><Leaf size={20} /></span><span>{content.brand.name}<small style={{ color: '#a9cdb8' }}>{content.brand.tagline}</small></span></Link>
           <p>{content.footer.blurb}</p>
           <div className="ge-social">
             <a href={content.footer.facebook || '#'} onClick={e => (!content.footer.facebook || content.footer.facebook === '#') && e.preventDefault()}>Facebook</a>
@@ -20,20 +20,20 @@ export default function Footer() {
           </div>
         </div>
         <div className="ge-fcol">
-          <h4>Shop</h4>
+          <h4>{content.footer.shopHeading}</h4>
           {categories.filter(c => c.id !== 'all').map(c => (
             <Link key={c.id} to={`/shop?cat=${c.id}`}>{c.name}</Link>
           ))}
         </div>
         <div className="ge-fcol">
-          <h4>Help</h4>
+          <h4>{content.footer.helpHeading}</h4>
           <Link to="/track-order">Track Order</Link>
           <Link to="/account/orders">My Orders</Link>
           <Link to="/wishlist">Wishlist</Link>
           <a onClick={e => e.preventDefault()} href="#">FAQ</a>
         </div>
         <div className="ge-fcol">
-          <h4>Contact</h4>
+          <h4>{content.footer.contactHeading}</h4>
           <span><MapPin size={13} /> {content.footer.address}</span>
           <span><Phone size={13} /> {content.footer.phone}</span>
           <span><Mail size={13} /> {content.footer.email}</span>
@@ -47,7 +47,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="ge-fbottom">
-        <span>© {new Date().getFullYear()} Green Energy. All rights reserved.</span>
+        <span>© {new Date().getFullYear()} {content.footer.copyrightText}</span>
         <button className="ge-adminlink" onClick={() => navigate(adminSession ? '/admin' : '/admin/login')}>Admin</button>
       </div>
     </footer>

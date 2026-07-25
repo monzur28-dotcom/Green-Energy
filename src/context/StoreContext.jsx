@@ -17,6 +17,8 @@ export function StoreProvider({ children }) {
 
   const [products, setProducts] = useState([]);
   const [categoriesRaw, setCategoriesRaw] = useState([]);
+  const [concerns, setConcerns] = useState([]);
+  const [brands, setBrands] = useState([]);
   const [content, setContent] = useState(null);
   const [settings, setSettings] = useState(null);
   const [cart, setCart] = useState({});
@@ -42,9 +44,13 @@ export function StoreProvider({ children }) {
 
     (async () => {
       try {
-        const [prods, cats, cnt, sett] = await Promise.all([api.get('/products'), api.get('/categories'), api.get('/content'), api.get('/settings')]);
+        const [prods, cats, cons, brds, cnt, sett] = await Promise.all([
+          api.get('/products'), api.get('/categories'), api.get('/concerns'), api.get('/brands'), api.get('/content'), api.get('/settings'),
+        ]);
         setProducts(prods);
         setCategoriesRaw(cats);
+        setConcerns(cons);
+        setBrands(brds);
         setContent(cnt);
         setSettings(sett);
 
@@ -119,6 +125,15 @@ export function StoreProvider({ children }) {
     setCategoriesRaw(list => list.filter(c => c.id !== id));
   };
 
+  // ---- concerns ----
+  const addConcern = async label => { const next = await api.post('/concerns', { label }, adminToken); setConcerns(next); };
+  const removeConcern = async label => { await api.del(`/concerns/${encodeURIComponent(label)}`, adminToken); setConcerns(list => list.filter(c => c !== label)); };
+
+  // ---- brands (homepage strip) ----
+  const addBrand = async ({ name, off }) => { const next = await api.post('/brands', { name, off }, adminToken); setBrands(next); };
+  const editBrand = async (index, patch) => { const next = await api.put(`/brands/${index}`, patch, adminToken); setBrands(next); };
+  const removeBrand = async index => { await api.del(`/brands/${index}`, adminToken); setBrands(list => list.filter((_, i) => i !== index)); };
+
   // ---- content / CMS ----
   const setSection = async (section, patch) => setContent(await api.patch(`/content/section/${section}`, patch, adminToken));
 
@@ -139,8 +154,10 @@ export function StoreProvider({ children }) {
 
   const resetStore = async () => {
     await api.post('/admin/reset', {}, adminToken);
-    const [prods, cats, cnt, sett] = await Promise.all([api.get('/products'), api.get('/categories'), api.get('/content'), api.get('/settings')]);
-    setProducts(prods); setCategoriesRaw(cats); setContent(cnt); setSettings(sett);
+    const [prods, cats, cons, brds, cnt, sett] = await Promise.all([
+      api.get('/products'), api.get('/categories'), api.get('/concerns'), api.get('/brands'), api.get('/content'), api.get('/settings'),
+    ]);
+    setProducts(prods); setCategoriesRaw(cats); setConcerns(cons); setBrands(brds); setContent(cnt); setSettings(sett);
   };
 
   // ---- admin auth ----
@@ -200,7 +217,9 @@ export function StoreProvider({ children }) {
     loaded, loadError,
     products, upsertProduct, removeProduct,
     categories, CAT, addCategory, editCategory, removeCategory,
-    content: content || { topbar: {}, hero: {}, footer: {} }, setSection,
+    concerns, addConcern, removeConcern,
+    brands, addBrand, editBrand, removeBrand,
+    content: content || { brand: {}, nav: {}, search: {}, topbar: {}, hero: {}, homepage: {}, footer: {} }, setSection,
     settings: settings || { freeShipThreshold: 999, shipDhaka: 60, shipOutside: 120, enabledPayments: ['Cash on Delivery'], adminPin: '' },
     updateSettings, changeAdminPin,
     cart, cartItems, cartCount, subtotal, freeShip, addToCart, setQty, clearCart, shippingFor,

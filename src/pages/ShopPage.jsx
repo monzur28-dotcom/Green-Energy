@@ -1,13 +1,12 @@
 import React, { useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useStore } from '../context/StoreContext.jsx';
-import { CONCERNS } from '../data.js';
 import ProductCard from '../components/ProductCard.jsx';
 
 const PAGE_SIZE = 12;
 
 export default function ShopPage() {
-  const { products, categories, CAT } = useStore();
+  const { products, categories, CAT, concerns } = useStore();
   const [params, setParams] = useSearchParams();
 
   const cat = params.get('cat') || 'all';
@@ -73,7 +72,7 @@ export default function ShopPage() {
 
           <div className="ge-filtergroup">
             <h4>Concern</h4>
-            {CONCERNS.map(cc => (
+            {concerns.map(cc => (
               <button key={cc} className={'ge-filterlink' + (concern === cc ? ' on' : '')} onClick={() => update({ concern: concern === cc ? '' : cc })}>{cc}</button>
             ))}
           </div>

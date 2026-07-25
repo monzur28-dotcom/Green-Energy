@@ -2,27 +2,42 @@ import React, { useState, useEffect } from 'react';
 import { Upload } from 'lucide-react';
 import { useStore } from '../../context/StoreContext.jsx';
 import CategoriesManager from './CategoriesManager.jsx';
+import ConcernsManager from './ConcernsManager.jsx';
+import BrandsManager from './BrandsManager.jsx';
 
-const TABS = ['Hero', 'Top bar', 'Footer', 'Categories'];
+const TABS = ['Brand & Nav', 'Hero', 'Homepage', 'Top bar', 'Footer', 'Categories', 'Concerns', 'Brands'];
 
 export default function AdminContentPage() {
   const { content, setSection } = useStore();
-  const [tab, setTab] = useState('Hero');
+  const [tab, setTab] = useState('Brand & Nav');
 
+  const [brand, setBrand] = useState(content.brand);
+  const [nav, setNav] = useState(content.nav);
+  const [search, setSearch] = useState(content.search);
   const [hero, setHero] = useState(content.hero);
+  const [homepage, setHomepage] = useState(content.homepage);
   const [topbar, setTopbar] = useState(content.topbar);
   const [footer, setFooter] = useState(content.footer);
   const [savedTab, setSavedTab] = useState(null);
 
-  useEffect(() => { setHero(content.hero); setTopbar(content.topbar); setFooter(content.footer); }, [content]);
+  useEffect(() => {
+    setBrand(content.brand); setNav(content.nav); setSearch(content.search);
+    setHero(content.hero); setHomepage(content.homepage);
+    setTopbar(content.topbar); setFooter(content.footer);
+  }, [content]);
 
   const flash = t => { setSavedTab(t); setTimeout(() => setSavedTab(null), 1800); };
+  const saveBrandNav = async () => { await setSection('brand', brand); await setSection('nav', nav); await setSection('search', search); flash('Brand & Nav'); };
   const saveHero = async () => { await setSection('hero', hero); flash('Hero'); };
+  const saveHomepage = async () => { await setSection('homepage', homepage); flash('Homepage'); };
   const saveTopbar = async () => { await setSection('topbar', topbar); flash('Top bar'); };
   const saveFooter = async () => { await setSection('footer', footer); flash('Footer'); };
 
   const heroImgs = hero.images || ['', '', ''];
   const setHeroImg = (i, v) => { const next = [...heroImgs]; next[i] = v; setHero({ ...hero, images: next }); };
+
+  const badges = homepage.trustBadges || [];
+  const setBadge = (i, patch) => { const next = [...badges]; next[i] = { ...next[i], ...patch }; setHomepage({ ...homepage, trustBadges: next }); };
 
   return (
     <>
@@ -33,6 +48,28 @@ export default function AdminContentPage() {
       <div className="ge-tabbar">
         {TABS.map(t => <button key={t} className={tab === t ? 'on' : ''} onClick={() => setTab(t)}>{t}</button>)}
       </div>
+
+      {tab === 'Brand & Nav' && (
+        <div className="ge-panel">
+          <h3>Brand identity</h3>
+          <div className="ge-2col">
+            <div className="ge-field"><label>Store name</label><input value={brand.name} onChange={e => setBrand({ ...brand, name: e.target.value })} /></div>
+            <div className="ge-field"><label>Tagline</label><input value={brand.tagline} onChange={e => setBrand({ ...brand, tagline: e.target.value })} /></div>
+          </div>
+
+          <h3 style={{ marginTop: 22 }}>Navigation labels</h3>
+          <div className="ge-2col">
+            <div className="ge-field"><label>"Home" link text</label><input value={nav.home} onChange={e => setNav({ ...nav, home: e.target.value })} /></div>
+            <div className="ge-field"><label>"Shop" link text</label><input value={nav.shop} onChange={e => setNav({ ...nav, shop: e.target.value })} /></div>
+          </div>
+          <div className="ge-field" style={{ maxWidth: 260 }}><label>"Track Order" link text</label><input value={nav.trackOrder} onChange={e => setNav({ ...nav, trackOrder: e.target.value })} /></div>
+
+          <h3 style={{ marginTop: 22 }}>Search bar</h3>
+          <div className="ge-field"><label>Placeholder text</label><input value={search.placeholder} onChange={e => setSearch({ ...search, placeholder: e.target.value })} /></div>
+
+          <button className="ge-primary" style={{ maxWidth: 200 }} onClick={saveBrandNav}>{savedTab === 'Brand & Nav' ? 'Saved ✓' : 'Save changes'}</button>
+        </div>
+      )}
 
       {tab === 'Hero' && (
         <div className="ge-panel">
@@ -60,6 +97,29 @@ export default function AdminContentPage() {
         </div>
       )}
 
+      {tab === 'Homepage' && (
+        <div className="ge-panel">
+          <h3>Shop-by-concern label</h3>
+          <div className="ge-field" style={{ maxWidth: 320 }}><input value={homepage.concernLabel} onChange={e => setHomepage({ ...homepage, concernLabel: e.target.value })} /></div>
+
+          <h3 style={{ marginTop: 22 }}>Trust badges (the 4 icons under the hero)</h3>
+          {badges.map((b, i) => (
+            <div className="ge-2col" key={i} style={{ marginBottom: 10 }}>
+              <div className="ge-field" style={{ marginBottom: 0 }}><label>Badge {i + 1} title</label><input value={b.title} onChange={e => setBadge(i, { title: e.target.value })} /></div>
+              <div className="ge-field" style={{ marginBottom: 0 }}><label>Badge {i + 1} subtitle</label><input value={b.subtitle} onChange={e => setBadge(i, { subtitle: e.target.value })} /></div>
+            </div>
+          ))}
+
+          <h3 style={{ marginTop: 22 }}>Top brands section</h3>
+          <div className="ge-2col">
+            <div className="ge-field"><label>Heading</label><input value={homepage.brandsHeading} onChange={e => setHomepage({ ...homepage, brandsHeading: e.target.value })} /></div>
+            <div className="ge-field"><label>Subheading</label><input value={homepage.brandsSubheading} onChange={e => setHomepage({ ...homepage, brandsSubheading: e.target.value })} /></div>
+          </div>
+
+          <button className="ge-primary" style={{ maxWidth: 200 }} onClick={saveHomepage}>{savedTab === 'Homepage' ? 'Saved ✓' : 'Save changes'}</button>
+        </div>
+      )}
+
       {tab === 'Top bar' && (
         <div className="ge-panel">
           <h3>Top announcement bar</h3>
@@ -84,11 +144,24 @@ export default function AdminContentPage() {
             <div className="ge-field"><label>Instagram URL</label><input value={footer.instagram} onChange={e => setFooter({ ...footer, instagram: e.target.value })} /></div>
           </div>
           <div className="ge-field"><label>YouTube URL</label><input value={footer.youtube} onChange={e => setFooter({ ...footer, youtube: e.target.value })} /></div>
+
+          <h3 style={{ marginTop: 22 }}>Column headings</h3>
+          <div className="ge-2col">
+            <div className="ge-field"><label>Shop column</label><input value={footer.shopHeading} onChange={e => setFooter({ ...footer, shopHeading: e.target.value })} /></div>
+            <div className="ge-field"><label>Help column</label><input value={footer.helpHeading} onChange={e => setFooter({ ...footer, helpHeading: e.target.value })} /></div>
+          </div>
+          <div className="ge-field" style={{ maxWidth: 260 }}><label>Contact column</label><input value={footer.contactHeading} onChange={e => setFooter({ ...footer, contactHeading: e.target.value })} /></div>
+
+          <h3 style={{ marginTop: 22 }}>Copyright line</h3>
+          <div className="ge-field"><label>Text after "© {new Date().getFullYear()}"</label><input value={footer.copyrightText} onChange={e => setFooter({ ...footer, copyrightText: e.target.value })} /></div>
+
           <button className="ge-primary" style={{ maxWidth: 200 }} onClick={saveFooter}>{savedTab === 'Footer' ? 'Saved ✓' : 'Save footer'}</button>
         </div>
       )}
 
       {tab === 'Categories' && <CategoriesManager />}
+      {tab === 'Concerns' && <ConcernsManager />}
+      {tab === 'Brands' && <BrandsManager />}
     </>
   );
 }

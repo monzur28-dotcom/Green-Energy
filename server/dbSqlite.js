@@ -1,7 +1,7 @@
 import { DatabaseSync } from 'node:sqlite';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { PRODUCTS, DEFAULT_CONTENT, DEFAULT_SETTINGS, DEFAULT_CATEGORIES } from '../src/data.js';
+import { PRODUCTS, DEFAULT_CONTENT, DEFAULT_SETTINGS, DEFAULT_CATEGORIES, DEFAULT_CONCERNS, DEFAULT_BRANDS } from '../src/data.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const db = new DatabaseSync(path.join(__dirname, 'store.db'));
@@ -94,6 +94,7 @@ export async function updateCategory(id, patch) {
 }
 export async function deleteCategoryRow(id) { db.prepare('DELETE FROM categories WHERE id = ?').run(id); }
 export async function countProductsInCategory(id) { return db.prepare('SELECT COUNT(*) AS n FROM products WHERE cat = ?').get(id).n; }
+export async function countProductsWithConcern(concern) { return db.prepare('SELECT COUNT(*) AS n FROM products WHERE concern = ?').get(concern).n; }
 export async function resetCategories(seedList) { seedCategories(seedList); }
 
 export async function listProducts() { return db.prepare('SELECT * FROM products ORDER BY id DESC').all().map(rowToProduct); }
@@ -126,6 +127,10 @@ export async function getContent() { return kvGetRaw('content', DEFAULT_CONTENT)
 export async function setContent(content) { kvSetRaw('content', content); }
 export async function getSettings() { return kvGetRaw('settings', DEFAULT_SETTINGS); }
 export async function setSettings(settings) { kvSetRaw('settings', settings); }
+export async function getConcerns() { return kvGetRaw('concerns', DEFAULT_CONCERNS); }
+export async function setConcerns(list) { kvSetRaw('concerns', list); }
+export async function getBrands() { return kvGetRaw('brands', DEFAULT_BRANDS); }
+export async function setBrands(list) { kvSetRaw('brands', list); }
 
 export async function createUser(u) {
   db.prepare('INSERT INTO users (id, name, email, phone, passHash, passSalt, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?)')
