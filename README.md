@@ -22,18 +22,17 @@ See `.env.example`. Key ones:
 - `DATABASE_URL` — Postgres connection string (Supabase transaction-pooler URL). Omit to use local SQLite.
 - `DB_DRIVER` — force `sqlite` or `postgres`; otherwise inferred from `DATABASE_URL`.
 
-## Deployment
-This is two separate deployments — a static frontend and a persistent Node API — plus the Supabase database, which is already hosted.
+## Deployment (single Vercel project)
+The frontend (static Vite build) and backend (Express app) deploy together from one repo:
+- `api/index.js` wraps the Express app (`server/app.js`) as a Vercel serverless function — this is what actually runs the API in production, not `server/index.js` (that's the local-dev-only entrypoint that calls `.listen()`).
+- `vercel.json` routes `/api/*` to that function and everything else to `index.html` (so client-side routes like `/shop` or `/admin` work on refresh).
+- Using Supabase's transaction-pooler `DATABASE_URL` (rather than a direct connection) matters here — serverless functions open many short-lived connections, which is exactly what the pooler is designed for.
 
-**Frontend (Vercel or Netlify):**
+Steps:
 1. Push this repo to GitHub.
-2. Import it on vercel.com (or netlify.com). Framework preset: Vite. Build command `npm run build`, output directory `dist`.
-3. Set an environment variable or rewrite so `/api/*` requests reach your deployed backend (see below) — the local dev proxy in `vite.config.js` only works locally.
-
-**Backend (Render, Railway, Fly.io, or any Node host):**
-1. Deploy the `server/` directory (or the whole repo with start command `node server/index.js`).
-2. Set the same environment variables as `.env` (`DATABASE_URL`, etc.) in that host's dashboard — never commit `.env`.
-3. Note the deployed API's URL and point the frontend's `/api` requests at it.
+2. Import it on vercel.com. Framework preset: Vite (auto-detected) — no build command changes needed.
+3. In the Vercel project's Settings → Environment Variables, add `DATABASE_URL` (and `DIRECT_URL` if you'll run migrations) from your `.env` — **never commit `.env` itself**.
+4. Deploy. Every push to the connected branch redeploys automatically.
 
 ## Notes
 - Cart and wishlist are stored client-side (`localStorage`) — everything else (products, categories, orders, customers, site content, settings) lives in the database.
