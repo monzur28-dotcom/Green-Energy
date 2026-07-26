@@ -6,18 +6,15 @@ html,body{margin:0;padding:0}
 .ge-root{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;position:relative;display:flex;flex-direction:column}
 .ge-main{flex:1}
 
-/* ---- decorative falling-meteor effect, dropped into any dark-green section ---- */
+/* ---- decorative falling-raindrop effect, dropped into any dark-green section ---- */
 .ge-meteors{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
 .ge-meteors.fixed{position:fixed;z-index:41}
-.ge-meteor{position:absolute;left:0;top:-15%;width:1px;height:10px;border-radius:1px;opacity:0;animation:ge-meteorfall linear infinite}
-.ge-meteor.c-blue{background:linear-gradient(to bottom,rgba(56,189,248,0),rgba(56,189,248,.9) 70%,#bae6fd);filter:drop-shadow(0 0 1px rgba(56,189,248,.8))}
-.ge-meteor.c-fire{background:linear-gradient(to bottom,rgba(255,87,34,0),rgba(255,87,34,.9) 70%,#ffd180);filter:drop-shadow(0 0 1px rgba(255,87,34,.8))}
-.ge-meteor.c-green{background:linear-gradient(to bottom,rgba(57,255,20,0),rgba(57,255,20,.9) 70%,#ccff90);filter:drop-shadow(0 0 1px rgba(57,255,20,.8))}
+.ge-meteor{position:absolute;left:0;top:-15%;width:1px;height:10px;border-radius:1px;opacity:0;background:linear-gradient(to bottom,rgba(255,255,255,0),rgba(215,235,255,.5) 55%,rgba(255,255,255,.85));animation:ge-meteorfall linear infinite}
 @keyframes ge-meteorfall{
-  0%{top:-15%;opacity:0;transform:translateX(0) rotate(12deg)}
-  12%{opacity:.9}
-  80%{opacity:.35}
-  100%{top:115%;opacity:0;transform:translateX(46px) rotate(12deg)}
+  0%{top:-15%;opacity:0;transform:translateX(0) rotate(4deg)}
+  10%{opacity:.8}
+  85%{opacity:.5}
+  100%{top:115%;opacity:0;transform:translateX(8px) rotate(4deg)}
 }
 .ge-dis,.ge-brand,.ge-price,.ge-sech,.ge-h1{font-family:'Outfit','Inter',sans-serif}
 a{color:inherit}

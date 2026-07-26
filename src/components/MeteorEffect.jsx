@@ -1,20 +1,17 @@
 import React from 'react';
 
-const COLORS = ['c-blue', 'c-fire', 'c-green'];
-
 // Stable across re-renders (computed once at module load), but still looks organic.
-const METEORS = Array.from({ length: 14 }, (_, i) => ({
+const DROPS = Array.from({ length: 14 }, () => ({
   left: Math.random() * 100,
   delay: -(Math.random() * 6),
-  duration: 2.6 + Math.random() * 3.2,
-  color: COLORS[i % COLORS.length],
+  duration: 1 + Math.random() * 1.2,
 }));
 
 export default function MeteorEffect({ fixed }) {
   return (
     <div className={'ge-meteors' + (fixed ? ' fixed' : '')} aria-hidden="true">
-      {METEORS.map((m, i) => (
-        <span key={i} className={'ge-meteor ' + m.color} style={{ left: `${m.left}%`, animationDelay: `${m.delay}s`, animationDuration: `${m.duration}s` }} />
+      {DROPS.map((d, i) => (
+        <span key={i} className="ge-meteor" style={{ left: `${d.left}%`, animationDelay: `${d.delay}s`, animationDuration: `${d.duration}s` }} />
       ))}
     </div>
   );
