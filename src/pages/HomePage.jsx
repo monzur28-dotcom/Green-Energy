@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Sparkles, ShieldCheck, Truck, Wallet, CreditCard } from 'lucide-react';
 import { useStore } from '../context/StoreContext.jsx';
 import ProductCard from '../components/ProductCard.jsx';
-import MeteorEffect from '../components/MeteorEffect.jsx';
 
 const TRUST_ICONS = [ShieldCheck, Truck, Wallet, CreditCard];
 
@@ -33,7 +32,6 @@ export default function HomePage() {
           <div key={i} className={'ge-heroslide' + (i === heroSlide ? ' on' : '')} style={{ backgroundImage: `url(${s.image})` }} />
         ))}
         {slides.some(s => s.image) && <div className="ge-herooverlay" style={{ opacity: content.hero.overlayOpacity ?? 0.7 }} />}
-        <MeteorEffect />
         {slides.map((s, i) => (
           <div key={i} className={'ge-herotext' + (i === heroSlide ? ' on' : '')}>
             <div className="eyebrow">{s.eyebrow}</div>

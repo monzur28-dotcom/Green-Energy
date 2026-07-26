@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Leaf, MapPin, Phone, Mail } from 'lucide-react';
 import { useStore } from '../context/StoreContext.jsx';
-import MeteorEffect from './MeteorEffect.jsx';
 
 export default function Footer() {
   const { content, categories, adminSession } = useStore();
@@ -10,7 +9,6 @@ export default function Footer() {
 
   return (
     <footer className="ge-footer">
-      <MeteorEffect />
       <div className="ge-finner">
         <div className="ge-fcol ge-fbrand">
           <Link to="/" className="ge-brand" style={{ color: '#fff' }}><span className="lf"><Leaf size={20} /></span><span>{content.brand.name}<small style={{ color: '#a9cdb8' }}>{content.brand.tagline}</small></span></Link>

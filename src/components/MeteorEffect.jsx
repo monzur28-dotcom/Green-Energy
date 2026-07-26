@@ -10,9 +10,9 @@ const METEORS = Array.from({ length: 14 }, (_, i) => ({
   color: COLORS[i % COLORS.length],
 }));
 
-export default function MeteorEffect() {
+export default function MeteorEffect({ fixed }) {
   return (
-    <div className="ge-meteors" aria-hidden="true">
+    <div className={'ge-meteors' + (fixed ? ' fixed' : '')} aria-hidden="true">
       {METEORS.map((m, i) => (
         <span key={i} className={'ge-meteor ' + m.color} style={{ left: `${m.left}%`, animationDelay: `${m.delay}s`, animationDuration: `${m.duration}s` }} />
       ))}

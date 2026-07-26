@@ -5,6 +5,7 @@ import { StoreProvider, useStore } from './context/StoreContext.jsx';
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
 import CartDrawer from './components/CartDrawer.jsx';
+import MeteorEffect from './components/MeteorEffect.jsx';
 import { RequireAdmin, RequireAccount } from './components/RouteGuards.jsx';
 
 import HomePage from './pages/HomePage.jsx';
@@ -45,6 +46,7 @@ function SiteLayout() {
   if (!loaded || loadError) return <LoadingScreen error={loadError} />;
   return (
     <div className="ge-root">
+      <MeteorEffect fixed />
       <Header />
       <div className="ge-main">
         <Outlet />
