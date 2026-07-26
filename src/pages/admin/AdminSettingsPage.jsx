@@ -9,6 +9,7 @@ const THEME_FIELDS = [
   { key: 'lime', label: 'Lemon-lime accent' },
   { key: 'gold', label: 'Gold' },
   { key: 'goldD', label: 'Deep gold' },
+  { key: 'bg', label: 'Page background' },
 ];
 
 export default function AdminSettingsPage() {

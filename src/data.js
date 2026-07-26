@@ -60,6 +60,7 @@ export const DEFAULT_THEME = {
   lime: '#bfd100',
   gold: '#d9a441',
   goldD: '#b8860b',
+  bg: '#f4f6f2',
 };
 
 export const DEFAULT_SETTINGS = {

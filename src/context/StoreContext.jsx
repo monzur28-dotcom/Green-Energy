@@ -4,7 +4,7 @@ import { iconFor } from '../icons.js';
 import { DEFAULT_THEME } from '../data.js';
 
 const ALL_CATEGORY = { id: 'all', name: 'All', icon: 'Sparkles', tint: '#e9f4ee', fg: '#14532d', subs: [] };
-const THEME_VARS = { green: '--green', greenD: '--green-d', green2: '--green-2', lime: '--lime', gold: '--gold', goldD: '--gold-d' };
+const THEME_VARS = { green: '--green', greenD: '--green-d', green2: '--green-2', lime: '--lime', gold: '--gold', goldD: '--gold-d', bg: '--bg' };
 
 const StoreCtx = createContext(null);
 
