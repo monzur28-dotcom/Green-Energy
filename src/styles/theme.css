@@ -9,7 +9,7 @@ html,body{margin:0;padding:0}
 /* ---- decorative falling-raindrop effect, dropped into any dark-green section ---- */
 .ge-meteors{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}
 .ge-meteors.fixed{position:fixed;z-index:41}
-.ge-meteor{position:absolute;left:0;top:-15%;width:1px;height:10px;border-radius:1px;opacity:0;background:linear-gradient(to bottom,rgba(255,255,255,0),rgba(215,235,255,.5) 55%,rgba(255,255,255,.85));animation:ge-meteorfall linear infinite}
+.ge-meteor{position:absolute;left:0;top:-15%;width:1.25px;height:12.5px;border-radius:1px;opacity:0;background:linear-gradient(to bottom,rgba(255,255,255,0),rgba(215,235,255,.5) 55%,rgba(255,255,255,.85));animation:ge-meteorfall linear infinite}
 @keyframes ge-meteorfall{
   0%{top:-15%;opacity:0;transform:translateX(0) rotate(4deg)}
   10%{opacity:.8}
