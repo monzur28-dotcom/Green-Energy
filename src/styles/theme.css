@@ -63,8 +63,8 @@ a{color:inherit}
 
 /* ---- hero ---- */
 .ge-hero{background:linear-gradient(50deg,var(--green-d) 0%,var(--green) 45%,var(--green-2) 75%,var(--lime) 125%);color:#fff;margin-bottom:24px;position:relative;left:50%;right:50%;width:100vw;margin-left:-50vw;margin-right:-50vw;overflow:hidden;aspect-ratio:2.6}
-.ge-heroslide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.4s ease;z-index:0}
-.ge-heroslide.on{opacity:1}
+.ge-heroslide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transform:scale(1.12) translateX(5%);transition:opacity 1.1s ease,transform 2.4s cubic-bezier(.16,1,.3,1);z-index:0;will-change:transform,opacity}
+.ge-heroslide.on{opacity:1;transform:scale(1) translateX(0)}
 .ge-herooverlay{position:absolute;inset:0;background:linear-gradient(120deg,rgba(10,47,28,.86),rgba(20,83,45,.6));z-index:1}
 .ge-herotext{position:absolute;inset:0;padding:38px 34px;display:flex;flex-direction:column;justify-content:center;opacity:0;transition:opacity .7s ease;pointer-events:none;z-index:2}
 .ge-herotext.on{opacity:1;pointer-events:auto}
