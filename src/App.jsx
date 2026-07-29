@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Outlet, useLocation } from 'react-router-dom';
 import { Leaf } from 'lucide-react';
 import { StoreProvider, useStore } from './context/StoreContext.jsx';
 import Header from './components/Header.jsx';
@@ -33,6 +33,13 @@ import AdminCustomersPage from './pages/admin/AdminCustomersPage.jsx';
 import AdminContentPage from './pages/admin/AdminContentPage.jsx';
 import AdminSettingsPage from './pages/admin/AdminSettingsPage.jsx';
 
+// React Router doesn't reset scroll position on navigation like a full page load would.
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  return null;
+}
+
 function LoadingScreen({ error }) {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 14, color: '#6d766c', fontFamily: "'Inter',sans-serif", padding: 24, textAlign: 'center' }}>
@@ -62,6 +69,7 @@ export default function App() {
   return (
     <StoreProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route element={<SiteLayout />}>
             <Route path="/" element={<HomePage />} />
