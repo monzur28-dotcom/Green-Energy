@@ -83,6 +83,14 @@ export function StoreProvider({ children }) {
     }
   }, [settings?.theme]);
 
+  // Admin-editable product card grid size/color.
+  useEffect(() => {
+    if (!settings) return;
+    const root = document.documentElement;
+    if (settings.productCardColumns) root.style.setProperty('--product-cols', settings.productCardColumns);
+    if (settings.productCardBg) root.style.setProperty('--card-bg', settings.productCardBg);
+  }, [settings?.productCardColumns, settings?.productCardBg]);
+
   // fetch admin-only data once admin session is confirmed
   useEffect(() => {
     if (!adminSession || !adminToken) return;

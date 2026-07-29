@@ -71,6 +71,8 @@ export const DEFAULT_SETTINGS = {
   currency: '৳',
   enabledPayments: ['Cash on Delivery', 'bKash', 'Nagad', 'SSLCommerz'],
   theme: DEFAULT_THEME,
+  productCardColumns: 6,
+  productCardBg: '#ffffff',
 };
 
 export const DEFAULT_CONTENT = {

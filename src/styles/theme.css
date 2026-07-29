@@ -102,8 +102,8 @@ a{color:inherit}
 .ge-viewall{font-size:13px;font-weight:600;color:var(--green);text-decoration:none}
 
 /* ---- product grid / card ---- */
-.ge-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.ge-pcard{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s;cursor:pointer;position:relative;text-decoration:none;color:inherit}
+.ge-grid{display:grid;grid-template-columns:repeat(var(--product-cols,6),1fr);gap:14px}
+.ge-pcard{background:var(--card-bg,#fff);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s;cursor:pointer;position:relative;text-decoration:none;color:inherit}
 .ge-pcard:hover{box-shadow:0 12px 30px rgba(18,122,82,.13);transform:translateY(-3px)}
 .ge-ptile{position:relative;aspect-ratio:1.05;display:flex;align-items:center;justify-content:center}
 .ge-off{position:absolute;top:11px;left:11px;background:var(--gold);color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;font-family:'Outfit',sans-serif}

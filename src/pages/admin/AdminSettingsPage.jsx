@@ -18,12 +18,16 @@ export default function AdminSettingsPage() {
   const [themeForm, setThemeForm] = useState(settings.theme);
   const [themeSaved, setThemeSaved] = useState(false);
   const [themeSaving, setThemeSaving] = useState(false);
+  const [gridForm, setGridForm] = useState({ columns: settings.productCardColumns, bg: settings.productCardBg });
+  const [gridSaved, setGridSaved] = useState(false);
+  const [gridSaving, setGridSaving] = useState(false);
   const [pinForm, setPinForm] = useState({ current: '', next: '', confirm: '' });
   const [pinMsg, setPinMsg] = useState(null);
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => { setThemeForm(settings.theme); }, [settings.theme]);
+  useEffect(() => { setGridForm({ columns: settings.productCardColumns, bg: settings.productCardBg }); }, [settings.productCardColumns, settings.productCardBg]);
 
   const saveTheme = async () => {
     setThemeSaving(true);
@@ -34,6 +38,14 @@ export default function AdminSettingsPage() {
   };
 
   const resetTheme = () => setThemeForm(DEFAULT_THEME);
+
+  const saveGrid = async () => {
+    setGridSaving(true);
+    await updateSettings({ productCardColumns: Number(gridForm.columns) || 6, productCardBg: gridForm.bg });
+    setGridSaving(false);
+    setGridSaved(true);
+    setTimeout(() => setGridSaved(false), 2000);
+  };
 
   const togglePayment = p => setForm(f => ({
     ...f,
@@ -110,6 +122,27 @@ export default function AdminSettingsPage() {
           <button className="ge-primary" style={{ maxWidth: 200, marginTop: 0 }} onClick={saveTheme} disabled={themeSaving}>{themeSaved ? 'Saved ✓' : themeSaving ? 'Saving…' : 'Save colors'}</button>
           <button className="ge-secondary" style={{ maxWidth: 200, marginTop: 0 }} onClick={resetTheme}>Reset to defaults</button>
         </div>
+      </div>
+
+      <div className="ge-panel">
+        <h3>Product grid</h3>
+        <div className="ge-note" style={{ marginBottom: 14 }}>Controls how many product boxes fit per row (on wide screens) and their background color, across the homepage, shop, and wishlist grids.</div>
+        <div className="ge-2col">
+          <div className="ge-field">
+            <label>Products per row (desktop)</label>
+            <select value={gridForm.columns} onChange={e => setGridForm({ ...gridForm, columns: e.target.value })}>
+              {[3, 4, 5, 6, 7, 8].map(n => <option key={n} value={n}>{n}</option>)}
+            </select>
+          </div>
+          <div className="ge-field">
+            <label>Product box background</label>
+            <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+              <input type="color" value={gridForm.bg} onChange={e => setGridForm({ ...gridForm, bg: e.target.value })} style={{ width: 44, height: 38, padding: 2, flexShrink: 0 }} />
+              <input value={gridForm.bg} onChange={e => setGridForm({ ...gridForm, bg: e.target.value })} style={{ fontFamily: 'monospace', fontSize: 12.5 }} />
+            </div>
+          </div>
+        </div>
+        <button className="ge-primary" style={{ maxWidth: 200, marginTop: 6 }} onClick={saveGrid} disabled={gridSaving}>{gridSaved ? 'Saved ✓' : gridSaving ? 'Saving…' : 'Save product grid'}</button>
       </div>
 
       <div className="ge-panel">
