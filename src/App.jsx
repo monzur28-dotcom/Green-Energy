@@ -16,6 +16,7 @@ import CheckoutPage from './pages/CheckoutPage.jsx';
 import OrderConfirmationPage from './pages/OrderConfirmationPage.jsx';
 import WishlistPage from './pages/WishlistPage.jsx';
 import TrackOrderPage from './pages/TrackOrderPage.jsx';
+import FAQPage from './pages/FAQPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
@@ -71,6 +72,7 @@ export default function App() {
             <Route path="/order/:id" element={<OrderConfirmationPage />} />
             <Route path="/wishlist" element={<WishlistPage />} />
             <Route path="/track-order" element={<TrackOrderPage />} />
+            <Route path="/faq" element={<FAQPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/account" element={<RequireAccount><AccountLayout /></RequireAccount>}>

@@ -6,7 +6,9 @@ import CategoriesManager from './CategoriesManager.jsx';
 import ConcernsManager from './ConcernsManager.jsx';
 import BrandsManager from './BrandsManager.jsx';
 
-const TABS = ['Brand & Nav', 'Hero', 'Homepage', 'Top bar', 'Footer', 'Categories', 'Concerns', 'Brands'];
+const blankFaqItem = () => ({ question: 'New question', answer: '' });
+
+const TABS = ['Brand & Nav', 'Hero', 'Homepage', 'Top bar', 'Footer', 'FAQ', 'Categories', 'Concerns', 'Brands'];
 
 export default function AdminContentPage() {
   const { content, setSection } = useStore();
@@ -19,12 +21,13 @@ export default function AdminContentPage() {
   const [homepage, setHomepage] = useState(content.homepage);
   const [topbar, setTopbar] = useState(content.topbar);
   const [footer, setFooter] = useState(content.footer);
+  const [faq, setFaq] = useState(content.faq);
   const [savedTab, setSavedTab] = useState(null);
 
   useEffect(() => {
     setBrand(content.brand); setNav(content.nav); setSearch(content.search);
     setHero(content.hero); setHomepage(content.homepage);
-    setTopbar(content.topbar); setFooter(content.footer);
+    setTopbar(content.topbar); setFooter(content.footer); setFaq(content.faq);
   }, [content]);
 
   const flash = t => { setSavedTab(t); setTimeout(() => setSavedTab(null), 1800); };
@@ -33,6 +36,12 @@ export default function AdminContentPage() {
   const saveHomepage = async () => { await setSection('homepage', homepage); flash('Homepage'); };
   const saveTopbar = async () => { await setSection('topbar', topbar); flash('Top bar'); };
   const saveFooter = async () => { await setSection('footer', footer); flash('Footer'); };
+  const saveFaq = async () => { await setSection('faq', faq); flash('FAQ'); };
+
+  const faqItems = faq.items || [];
+  const updateFaqItem = (i, patch) => { const next = [...faqItems]; next[i] = { ...next[i], ...patch }; setFaq({ ...faq, items: next }); };
+  const addFaqItem = () => setFaq({ ...faq, items: [...faqItems, blankFaqItem()] });
+  const removeFaqItem = i => setFaq({ ...faq, items: faqItems.filter((_, idx) => idx !== i) });
 
   const heroSlides = hero.slides || [];
   const updateSlide = (i, patch) => { const next = [...heroSlides]; next[i] = { ...next[i], ...patch }; setHero({ ...hero, slides: next }); };
@@ -181,6 +190,28 @@ export default function AdminContentPage() {
           <div className="ge-field"><label>Text after "© {new Date().getFullYear()}"</label><input value={footer.copyrightText} onChange={e => setFooter({ ...footer, copyrightText: e.target.value })} /></div>
 
           <button className="ge-primary" style={{ maxWidth: 200 }} onClick={saveFooter}>{savedTab === 'Footer' ? 'Saved ✓' : 'Save footer'}</button>
+        </div>
+      )}
+
+      {tab === 'FAQ' && (
+        <div className="ge-panel">
+          <h3>Frequently asked questions</h3>
+          <div className="ge-note" style={{ marginBottom: 18 }}>Shown on the /faq page, linked from the footer. Add as many as you like.</div>
+
+          {faqItems.map((item, i) => (
+            <div key={i} style={{ border: '1px solid var(--line)', borderRadius: 14, padding: 16, marginBottom: 14 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <b style={{ fontFamily: "'Outfit',sans-serif" }}>Question {i + 1}</b>
+                <button className="ge-tblbtn danger" onClick={() => removeFaqItem(i)}><Trash2 size={12} /> Remove</button>
+              </div>
+              <div className="ge-field"><label>Question</label><input value={item.question} onChange={e => updateFaqItem(i, { question: e.target.value })} /></div>
+              <div className="ge-field" style={{ marginBottom: 0 }}><label>Answer</label><textarea rows={3} value={item.answer} onChange={e => updateFaqItem(i, { answer: e.target.value })} /></div>
+            </div>
+          ))}
+
+          <button className="ge-addtile" style={{ minHeight: 70, marginBottom: 22 }} onClick={addFaqItem}><Plus size={20} /><span>Add question</span></button>
+
+          <button className="ge-primary" style={{ maxWidth: 200 }} onClick={saveFaq}>{savedTab === 'FAQ' ? 'Saved ✓' : 'Save FAQ'}</button>
         </div>
       )}
 

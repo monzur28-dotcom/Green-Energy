@@ -111,6 +111,15 @@ export const DEFAULT_CONTENT = {
     shopHeading: 'Shop', helpHeading: 'Help', contactHeading: 'Contact',
     copyrightText: 'Green Energy. All rights reserved.',
   },
+  faq: {
+    items: [
+      { question: 'How long does delivery take?', answer: 'Dhaka: 2 days. Outside Dhaka: 3–5 days.' },
+      { question: 'What payment methods do you accept?', answer: 'Cash on Delivery, bKash, Nagad, and SSLCommerz (card/mobile banking).' },
+      { question: 'Can I return or exchange a product?', answer: 'Yes — unopened items can be returned within 7 days of delivery. Contact us with your order ID to start a return.' },
+      { question: 'How do I track my order?', answer: 'Use the "Track Order" link in the menu with your order ID and phone number.' },
+      { question: 'Are your products genuine?', answer: 'Yes, every product is 100% original and sourced directly from the brand or an authorized distributor.' },
+    ],
+  },
 };
 
 export const blankProduct = () => ({

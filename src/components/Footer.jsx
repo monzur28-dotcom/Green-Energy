@@ -30,7 +30,7 @@ export default function Footer() {
           <Link to="/track-order">Track Order</Link>
           <Link to="/account/orders">My Orders</Link>
           <Link to="/wishlist">Wishlist</Link>
-          <a onClick={e => e.preventDefault()} href="#">FAQ</a>
+          <Link to="/faq">FAQ</Link>
         </div>
         <div className="ge-fcol">
           <h4>{content.footer.contactHeading}</h4>
