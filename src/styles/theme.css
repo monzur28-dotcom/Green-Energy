@@ -105,7 +105,7 @@ a{color:inherit}
 .ge-grid{display:grid;grid-template-columns:repeat(var(--product-cols,6),1fr);gap:10px;align-items:start}
 .ge-pcard{background:var(--card-bg,#fff);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s;cursor:pointer;position:relative;text-decoration:none;color:inherit}
 .ge-pcard:hover{box-shadow:0 12px 30px rgba(18,122,82,.13);transform:translateY(-3px)}
-.ge-ptile{position:relative;aspect-ratio:1.3;display:flex;align-items:center;justify-content:center}
+.ge-ptile{position:relative;aspect-ratio:1.3;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .ge-off{position:absolute;top:8px;left:8px;background:var(--gold);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;font-family:'Outfit',sans-serif}
 .ge-tag{position:absolute;bottom:8px;left:8px;background:var(--green);color:#fff;font-size:9px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;padding:2px 8px;border-radius:20px;display:flex;align-items:center;gap:3px}
 .ge-wish{position:absolute;top:6px;right:6px;background:#fff;border:1px solid var(--line);width:27px;height:27px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2}
@@ -125,6 +125,7 @@ a{color:inherit}
 .ge-addbtn.dis{background:#f1f2ee;color:var(--muted);border-color:var(--line);cursor:not-allowed}
 .ge-empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)}
 .ge-pimg{width:100%;height:100%;object-fit:cover;display:block}
+.ge-ptile .ge-pimg{position:absolute;inset:0}
 
 /* ---- shop page layout ---- */
 .ge-shoplayout{display:grid;grid-template-columns:230px 1fr;gap:24px;align-items:start}
