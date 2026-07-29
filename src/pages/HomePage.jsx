@@ -16,7 +16,7 @@ export default function HomePage() {
 
   useEffect(() => {
     if (slides.length < 2) { setHeroSlide(0); return; }
-    const t = setInterval(() => setHeroSlide(s => (s + 1) % slides.length), 4500);
+    const t = setInterval(() => setHeroSlide(s => (s + 1) % slides.length), 5000);
     return () => clearInterval(t);
   }, [slides.length]);
 
@@ -31,12 +31,12 @@ export default function HomePage() {
         {slides.map((s, i) => s.image && (
           <div key={i} className={'ge-heroslide' + (i === heroSlide ? ' on' : '')} style={{ backgroundImage: `url(${s.image})` }} />
         ))}
-        {slides.some(s => s.image) && <div className="ge-herooverlay" style={{ opacity: content.hero.overlayOpacity ?? 0.7 }} />}
-        {slides.map((s, i) => (
+        {slides.some(s => s.image) && (content.hero.overlayOpacity ?? 0) > 0 && <div className="ge-herooverlay" style={{ opacity: content.hero.overlayOpacity }} />}
+        {slides.map((s, i) => (s.eyebrow || s.title || s.subtitle || s.cta) && (
           <div key={i} className={'ge-herotext' + (i === heroSlide ? ' on' : '')}>
-            <div className="eyebrow">{s.eyebrow}</div>
-            <h1>{s.title}</h1>
-            <p>{s.subtitle}</p>
+            {s.eyebrow && <div className="eyebrow">{s.eyebrow}</div>}
+            {s.title && <h1>{s.title}</h1>}
+            {s.subtitle && <p>{s.subtitle}</p>}
             {s.cta && <Link className="cta" to="/shop">{s.cta}</Link>}
           </div>
         ))}

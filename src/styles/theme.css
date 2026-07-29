@@ -62,8 +62,7 @@ a{color:inherit}
 .ge-wrap.narrow{max-width:760px}
 
 /* ---- hero ---- */
-.ge-hero{background:linear-gradient(50deg,var(--green-d) 0%,var(--green) 45%,var(--green-2) 75%,var(--lime) 125%);border-radius:20px;color:#fff;margin-bottom:22px;position:relative;overflow:hidden;min-height:260px}
-.ge-hero::after{content:'';position:absolute;right:-30px;top:-40px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.1);z-index:1}
+.ge-hero{background:linear-gradient(50deg,var(--green-d) 0%,var(--green) 45%,var(--green-2) 75%,var(--lime) 125%);color:#fff;margin-bottom:24px;position:relative;left:50%;right:50%;width:100vw;margin-left:-50vw;margin-right:-50vw;overflow:hidden;aspect-ratio:2.6}
 .ge-heroslide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.4s ease;z-index:0}
 .ge-heroslide.on{opacity:1}
 .ge-herooverlay{position:absolute;inset:0;background:linear-gradient(120deg,rgba(10,47,28,.86),rgba(20,83,45,.6));z-index:1}
@@ -349,6 +348,7 @@ a{color:inherit}
   .ge-acctnav{position:static;flex-direction:row;overflow-x:auto}
 }
 @media(max-width:900px){
+  .ge-hero{aspect-ratio:1.5}
   .ge-trust{grid-template-columns:repeat(2,1fr)}
   .ge-brandstrip{grid-template-columns:repeat(3,1fr)}
   .ge-grid{grid-template-columns:repeat(3,1fr)}
@@ -361,6 +361,7 @@ a{color:inherit}
   .ge-admmenubtn{display:flex}
 }
 @media(max-width:560px){
+  .ge-hero{aspect-ratio:1.05}
   .ge-grid{grid-template-columns:repeat(2,1fr)}
   .ge-search{order:3;flex-basis:100%}
   .ge-hrow{flex-wrap:wrap}

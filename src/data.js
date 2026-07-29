@@ -81,7 +81,7 @@ export const DEFAULT_CONTENT = {
   search: { placeholder: 'Search brands & products — serum, sunscreen, lipstick…' },
   topbar: { promo: '🌿 100% original · clean beauty & personal care · delivery: Dhaka 2 days, outside 3–5 days', hotline: '16xxx' },
   hero: {
-    overlayOpacity: 0.7,
+    overlayOpacity: 0,
     slides: [
       {
         image: 'https://picsum.photos/1200/700?random=101',
