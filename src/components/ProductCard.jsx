@@ -11,7 +11,7 @@ export default function ProductCard({ product: p }) {
   return (
     <Link to={`/product/${p.id}`} className="ge-pcard">
       <div className={'ge-ptile' + (p.sold ? ' ge-soldwrap' : '')} style={{ background: p.image ? '#fff' : c.tint }}>
-        {p.image ? <img src={p.image} alt={p.name} className="ge-pimg" /> : <c.Icon size={64} color={c.fg} strokeWidth={1.4} />}
+        {p.image ? <img src={p.image} alt={p.name} className="ge-pimg" /> : <c.Icon size={40} color={c.fg} strokeWidth={1.4} />}
         {!p.sold && pctOff(p) > 0 && <span className="ge-off">-{pctOff(p)}%</span>}
         {p.tag && !p.sold && <span className="ge-tag">{p.tag === 'Combo' || p.tag === 'Buy 1 Get 1' ? <Gift size={11} /> : null}{p.tag}</span>}
         <button className="ge-wish" onClick={e => { e.preventDefault(); e.stopPropagation(); toggleWishlist(p.id); }}>

@@ -102,23 +102,25 @@ a{color:inherit}
 .ge-viewall{font-size:13px;font-weight:600;color:var(--green);text-decoration:none}
 
 /* ---- product grid / card ---- */
-.ge-grid{display:grid;grid-template-columns:repeat(var(--product-cols,6),1fr);gap:14px}
-.ge-pcard{background:var(--card-bg,#fff);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s;cursor:pointer;position:relative;text-decoration:none;color:inherit}
+.ge-grid{display:grid;grid-template-columns:repeat(var(--product-cols,6),1fr);gap:10px;align-items:start}
+.ge-pcard{background:var(--card-bg,#fff);border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s;cursor:pointer;position:relative;text-decoration:none;color:inherit}
 .ge-pcard:hover{box-shadow:0 12px 30px rgba(18,122,82,.13);transform:translateY(-3px)}
-.ge-ptile{position:relative;aspect-ratio:1.05;display:flex;align-items:center;justify-content:center}
-.ge-off{position:absolute;top:11px;left:11px;background:var(--gold);color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;font-family:'Outfit',sans-serif}
-.ge-tag{position:absolute;bottom:11px;left:11px;background:var(--green);color:#fff;font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:3px 9px;border-radius:20px;display:flex;align-items:center;gap:4px}
-.ge-wish{position:absolute;top:9px;right:9px;background:#fff;border:1px solid var(--line);width:33px;height:33px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2}
+.ge-ptile{position:relative;aspect-ratio:1.3;display:flex;align-items:center;justify-content:center}
+.ge-off{position:absolute;top:8px;left:8px;background:var(--gold);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;font-family:'Outfit',sans-serif}
+.ge-tag{position:absolute;bottom:8px;left:8px;background:var(--green);color:#fff;font-size:9px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;padding:2px 8px;border-radius:20px;display:flex;align-items:center;gap:3px}
+.ge-wish{position:absolute;top:6px;right:6px;background:#fff;border:1px solid var(--line);width:27px;height:27px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2}
+.ge-wish svg{width:13px;height:13px}
 .ge-soldwrap::before{content:'Sold out';position:absolute;inset:0;background:rgba(255,255,255,.55);display:flex;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-weight:600;color:var(--ink);z-index:1;border-radius:0}
-.ge-pbody{padding:13px 15px 16px;display:flex;flex-direction:column;gap:5px;flex:1}
-.ge-pbrand{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--green)}
-.ge-pname{font-size:14px;font-weight:500;line-height:1.35;color:var(--ink)}
-.ge-rate{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted)}
-.ge-rate .n{background:var(--green);color:#fff;font-weight:600;padding:1px 6px;border-radius:20px;display:flex;align-items:center;gap:3px;font-size:11.5px}
-.ge-pricerow{display:flex;align-items:baseline;gap:8px;margin-top:auto;padding-top:4px}
-.ge-price{font-size:18px;font-weight:700;color:var(--gold-d)}
-.ge-mrp{font-size:13px;color:var(--muted);text-decoration:line-through}
-.ge-addbtn{margin-top:9px;background:var(--mint);color:var(--green-d);border:1px solid #cfe6d9;padding:10px;border-radius:30px;font-weight:600;font-family:inherit;font-size:13.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s}
+.ge-pbody{padding:9px 10px 10px;display:flex;flex-direction:column;gap:3px;flex:1}
+.ge-pbrand{font-size:9.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--green)}
+.ge-pname{font-size:12.5px;font-weight:500;line-height:1.3;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
+.ge-rate{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted)}
+.ge-rate .n{background:var(--green);color:#fff;font-weight:600;padding:1px 5px;border-radius:20px;display:flex;align-items:center;gap:2px;font-size:10px}
+.ge-pricerow{display:flex;align-items:baseline;gap:6px;margin-top:auto;padding-top:2px;flex-wrap:wrap}
+.ge-price{font-size:14.5px;font-weight:700;color:var(--gold-d)}
+.ge-mrp{font-size:11px;color:var(--muted);text-decoration:line-through}
+.ge-addbtn{margin-top:6px;background:var(--mint);color:var(--green-d);border:1px solid #cfe6d9;padding:7px;border-radius:30px;font-weight:600;font-family:inherit;font-size:11.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;transition:all .15s}
+.ge-addbtn svg{width:12px;height:12px}
 .ge-addbtn:hover{background:linear-gradient(90deg,var(--lime),var(--gold));color:#fff;border-color:transparent}
 .ge-addbtn.dis{background:#f1f2ee;color:var(--muted);border-color:var(--line);cursor:not-allowed}
 .ge-empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)}
