@@ -14,8 +14,10 @@ export default function ProductEditModal({ product, isNew, saving, onClose, onSa
       <div className="ge-modal" onClick={e => e.stopPropagation()}>
         <div className="ge-mhead"><h3>{isNew ? 'Add product' : 'Edit product'}</h3><button className="ge-x" onClick={onClose}><X size={18} /></button></div>
         <div className="ge-mbody">
-          <div className="ge-qtile" style={{ background: p.image ? '#fff' : ec.tint, aspectRatio: '3' }}>
-            {p.image ? <img src={p.image} alt="" className="ge-pimg" /> : (() => { const I = ec.Icon; return <I size={60} color={ec.fg} strokeWidth={1.3} />; })()}
+          <div className="ge-qtile" style={{ background: p.image ? '#fff' : ec.tint, aspectRatio: '3', flexDirection: 'column', gap: 6 }}>
+            {p.image
+              ? <img src={p.image} alt="" className="ge-pimg" />
+              : (() => { const I = ec.Icon; return <><I size={40} color={ec.fg} strokeWidth={1.3} /><span style={{ fontSize: 12, color: ec.fg, opacity: 0.75 }}>No photo yet</span></>; })()}
           </div>
           <div className="ge-2col">
             <div className="ge-field"><label>Product name</label><input value={p.name} onChange={e => update({ name: e.target.value })} /></div>

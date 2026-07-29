@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Outlet, useLocation } from 'react-router-dom';
 import { Leaf } from 'lucide-react';
 import { StoreProvider, useStore } from './context/StoreContext.jsx';
+import ErrorBoundary from './components/ErrorBoundary.jsx';
 import Header from './components/Header.jsx';
 import Footer from './components/Footer.jsx';
 import CartDrawer from './components/CartDrawer.jsx';
@@ -67,41 +68,43 @@ function SiteLayout() {
 
 export default function App() {
   return (
-    <StoreProvider>
-      <BrowserRouter>
-        <ScrollToTop />
-        <Routes>
-          <Route element={<SiteLayout />}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/shop" element={<ShopPage />} />
-            <Route path="/product/:id" element={<ProductPage />} />
-            <Route path="/cart" element={<CartPage />} />
-            <Route path="/checkout" element={<CheckoutPage />} />
-            <Route path="/order/:id" element={<OrderConfirmationPage />} />
-            <Route path="/wishlist" element={<WishlistPage />} />
-            <Route path="/track-order" element={<TrackOrderPage />} />
-            <Route path="/faq" element={<FAQPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/account" element={<RequireAccount><AccountLayout /></RequireAccount>}>
-              <Route index element={<ProfileTab />} />
-              <Route path="orders" element={<OrdersTab />} />
+    <ErrorBoundary>
+      <StoreProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <Routes>
+            <Route element={<SiteLayout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/shop" element={<ShopPage />} />
+              <Route path="/product/:id" element={<ProductPage />} />
+              <Route path="/cart" element={<CartPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/order/:id" element={<OrderConfirmationPage />} />
+              <Route path="/wishlist" element={<WishlistPage />} />
+              <Route path="/track-order" element={<TrackOrderPage />} />
+              <Route path="/faq" element={<FAQPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/account" element={<RequireAccount><AccountLayout /></RequireAccount>}>
+                <Route index element={<ProfileTab />} />
+                <Route path="orders" element={<OrdersTab />} />
+              </Route>
+              <Route path="/404" element={<NotFoundPage />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Route>
-            <Route path="/404" element={<NotFoundPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Route>
 
-          <Route path="/admin/login" element={<AdminLoginPage />} />
-          <Route path="/admin" element={<RequireAdmin><AdminLayout /></RequireAdmin>}>
-            <Route index element={<AdminOverviewPage />} />
-            <Route path="products" element={<AdminProductsPage />} />
-            <Route path="orders" element={<AdminOrdersPage />} />
-            <Route path="customers" element={<AdminCustomersPage />} />
-            <Route path="content" element={<AdminContentPage />} />
-            <Route path="settings" element={<AdminSettingsPage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </StoreProvider>
+            <Route path="/admin/login" element={<AdminLoginPage />} />
+            <Route path="/admin" element={<RequireAdmin><AdminLayout /></RequireAdmin>}>
+              <Route index element={<AdminOverviewPage />} />
+              <Route path="products" element={<AdminProductsPage />} />
+              <Route path="orders" element={<AdminOrdersPage />} />
+              <Route path="customers" element={<AdminCustomersPage />} />
+              <Route path="content" element={<AdminContentPage />} />
+              <Route path="settings" element={<AdminSettingsPage />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </StoreProvider>
+    </ErrorBoundary>
   );
 }
