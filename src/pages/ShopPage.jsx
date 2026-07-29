@@ -52,6 +52,17 @@ export default function ShopPage() {
 
       <div className="ge-shoplayout">
         <aside className="ge-filterbox">
+          <div className="ge-filtergroup">
+            <h4>Sort by</h4>
+            <select className="ge-sortselect" value={sort} onChange={e => update({ sort: e.target.value })}>
+              <option value="relevance">Relevance</option>
+              <option value="newest">Newest</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+              <option value="rating">Highest rated</option>
+            </select>
+          </div>
+
           <h4>Category</h4>
           <div className="ge-filtergroup">
             {categories.map(c => (
@@ -88,17 +99,6 @@ export default function ShopPage() {
         </aside>
 
         <div>
-          <div className="ge-sortbar">
-            <span className="ge-secsub" style={{ margin: 0 }}>Showing {pageItems.length ? (page - 1) * PAGE_SIZE + 1 : 0}–{(page - 1) * PAGE_SIZE + pageItems.length} of {filtered.length}</span>
-            <select value={sort} onChange={e => update({ sort: e.target.value })}>
-              <option value="relevance">Sort: Relevance</option>
-              <option value="newest">Newest</option>
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
-              <option value="rating">Highest rated</option>
-            </select>
-          </div>
-
           <div className="ge-grid">
             {pageItems.map(p => <ProductCard key={p.id} product={p} />)}
             {filtered.length === 0 && <div className="ge-empty">No products found. Try another brand, category, or concern.</div>}
