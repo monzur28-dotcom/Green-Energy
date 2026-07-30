@@ -62,7 +62,7 @@ a{color:inherit}
 .ge-wrap.narrow{max-width:760px}
 
 /* ---- hero ---- */
-.ge-hero{background:linear-gradient(50deg,var(--green-d) 0%,var(--green) 45%,var(--green-2) 75%,var(--lime) 125%);color:#fff;margin-bottom:24px;position:relative;left:50%;right:50%;width:100vw;margin-left:-50vw;margin-right:-50vw;overflow:hidden;aspect-ratio:2.6}
+.ge-hero{background:linear-gradient(50deg,var(--green-d) 0%,var(--green) 45%,var(--green-2) 75%,var(--lime) 125%);color:#fff;margin-bottom:24px;position:relative;width:100%;overflow:hidden;aspect-ratio:2.6}
 .ge-heroslide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1s ease;z-index:0}
 .ge-heroslide.on{opacity:1}
 .ge-herooverlay{position:absolute;inset:0;background:linear-gradient(120deg,rgba(10,47,28,.86),rgba(20,83,45,.6));z-index:1}
