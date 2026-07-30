@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Sparkles, ShieldCheck, Truck, Wallet, CreditCard } from 'lucide-react';
 import { useStore } from '../context/StoreContext.jsx';
 import ProductCard from '../components/ProductCard.jsx';
+import HeroPremium from '../components/HeroPremium.jsx';
 
 const TRUST_ICONS = [ShieldCheck, Truck, Wallet, CreditCard];
 
@@ -27,25 +28,29 @@ export default function HomePage() {
 
   return (
     <>
-      <div className="ge-hero">
-        {slides.map((s, i) => s.image && (
-          <div key={i} className={'ge-heroslide' + (i === heroSlide ? ' on' : '')} style={{ backgroundImage: `url(${s.image})` }} />
-        ))}
-        {slides.some(s => s.image) && (content.hero.overlayOpacity ?? 0) > 0 && <div className="ge-herooverlay" style={{ opacity: content.hero.overlayOpacity }} />}
-        {slides.map((s, i) => (s.eyebrow || s.title || s.subtitle || s.cta) && (
-          <div key={i} className={'ge-herotext' + (i === heroSlide ? ' on' : '')}>
-            {s.eyebrow && <div className="eyebrow">{s.eyebrow}</div>}
-            {s.title && <h1>{s.title}</h1>}
-            {s.subtitle && <p>{s.subtitle}</p>}
-            {s.cta && <Link className="cta" to="/shop">{s.cta}</Link>}
-          </div>
-        ))}
-        {slides.length > 1 && (
-          <div className="ge-herodots">
-            {slides.map((_, i) => <button key={i} className={'ge-herodot' + (i === heroSlide ? ' on' : '')} onClick={() => setHeroSlide(i)} aria-label={`Slide ${i + 1}`} />)}
-          </div>
-        )}
-      </div>
+      {content.hero.layout === 'premium' ? (
+        <HeroPremium data={content.hero.premium} />
+      ) : (
+        <div className="ge-hero">
+          {slides.map((s, i) => s.image && (
+            <div key={i} className={'ge-heroslide' + (i === heroSlide ? ' on' : '')} style={{ backgroundImage: `url(${s.image})` }} />
+          ))}
+          {slides.some(s => s.image) && (content.hero.overlayOpacity ?? 0) > 0 && <div className="ge-herooverlay" style={{ opacity: content.hero.overlayOpacity }} />}
+          {slides.map((s, i) => (s.eyebrow || s.title || s.subtitle || s.cta) && (
+            <div key={i} className={'ge-herotext' + (i === heroSlide ? ' on' : '')}>
+              {s.eyebrow && <div className="eyebrow">{s.eyebrow}</div>}
+              {s.title && <h1>{s.title}</h1>}
+              {s.subtitle && <p>{s.subtitle}</p>}
+              {s.cta && <Link className="cta" to="/shop">{s.cta}</Link>}
+            </div>
+          ))}
+          {slides.length > 1 && (
+            <div className="ge-herodots">
+              {slides.map((_, i) => <button key={i} className={'ge-herodot' + (i === heroSlide ? ' on' : '')} onClick={() => setHeroSlide(i)} aria-label={`Slide ${i + 1}`} />)}
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="ge-wrap">
         <div className="ge-concern">

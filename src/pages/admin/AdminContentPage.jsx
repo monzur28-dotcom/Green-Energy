@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Upload, Plus, Trash2 } from 'lucide-react';
 import { useStore } from '../../context/StoreContext.jsx';
-import { blankHeroSlide } from '../../data.js';
+import { blankHeroSlide, blankHeroProduct } from '../../data.js';
 import CategoriesManager from './CategoriesManager.jsx';
 import ConcernsManager from './ConcernsManager.jsx';
 import BrandsManager from './BrandsManager.jsx';
@@ -48,6 +48,13 @@ export default function AdminContentPage() {
   const addSlide = () => setHero({ ...hero, slides: [...heroSlides, blankHeroSlide()] });
   const removeSlide = i => { if (heroSlides.length <= 1) return; setHero({ ...hero, slides: heroSlides.filter((_, idx) => idx !== i) }); };
 
+  const premium = hero.premium || {};
+  const setPremium = patch => setHero({ ...hero, premium: { ...premium, ...patch } });
+  const premiumProducts = premium.products || [];
+  const updatePremiumProduct = (i, patch) => { const next = [...premiumProducts]; next[i] = { ...next[i], ...patch }; setPremium({ products: next }); };
+  const addPremiumProduct = () => setPremium({ products: [...premiumProducts, blankHeroProduct()] });
+  const removePremiumProduct = i => setPremium({ products: premiumProducts.filter((_, idx) => idx !== i) });
+
   const badges = homepage.trustBadges || [];
   const setBadge = (i, patch) => { const next = [...badges]; next[i] = { ...next[i], ...patch }; setHomepage({ ...homepage, trustBadges: next }); };
 
@@ -84,6 +91,17 @@ export default function AdminContentPage() {
       )}
 
       {tab === 'Hero' && (
+        <div className="ge-panel">
+          <h3>Hero style</h3>
+          <div className="ge-note" style={{ marginBottom: 14 }}>Choose how the homepage hero looks. Both styles save independently, so switching back and forth keeps each one's content.</div>
+          <div style={{ display: 'flex', gap: 10, marginBottom: 22 }}>
+            <button className="ge-tblbtn" style={hero.layout !== 'premium' ? { background: 'var(--green)', color: '#fff', borderColor: 'var(--green)' } : {}} onClick={() => setHero({ ...hero, layout: 'banner' })}>Banner posters</button>
+            <button className="ge-tblbtn" style={hero.layout === 'premium' ? { background: 'var(--green)', color: '#fff', borderColor: 'var(--green)' } : {}} onClick={() => setHero({ ...hero, layout: 'premium' })}>Premium showcase</button>
+          </div>
+        </div>
+      )}
+
+      {tab === 'Hero' && hero.layout !== 'premium' && (
         <div className="ge-panel">
           <h3>Hero posters</h3>
           <div className="ge-note" style={{ marginBottom: 18 }}>
@@ -128,6 +146,59 @@ export default function AdminContentPage() {
           </div>
 
           <button className="ge-primary" style={{ maxWidth: 200 }} onClick={saveHero}>{savedTab === 'Hero' ? 'Saved ✓' : 'Save all posters'}</button>
+        </div>
+      )}
+
+      {tab === 'Hero' && hero.layout === 'premium' && (
+        <div className="ge-panel">
+          <h3>Premium showcase content</h3>
+          <div className="ge-note" style={{ marginBottom: 18 }}>A single fixed layout: a text panel, a row of floating product photos, and a lifestyle photo on the right. Best with product photos that already have a transparent or white background.</div>
+
+          <div className="ge-2col">
+            <div className="ge-field"><label>Small label (eyebrow)</label><input value={premium.eyebrow || ''} onChange={e => setPremium({ eyebrow: e.target.value })} /></div>
+            <div className="ge-field"><label>Headline</label><input value={premium.title || ''} onChange={e => setPremium({ title: e.target.value })} /></div>
+          </div>
+          <div className="ge-field"><label>Subtext</label><input value={premium.subtitle || ''} onChange={e => setPremium({ subtitle: e.target.value })} /></div>
+          <div className="ge-2col">
+            <div className="ge-field"><label>Button text</label><input value={premium.cta || ''} onChange={e => setPremium({ cta: e.target.value })} placeholder="Leave blank to hide the button" /></div>
+            <div className="ge-field"><label>Button link</label><input value={premium.ctaLink || ''} onChange={e => setPremium({ ctaLink: e.target.value })} placeholder="/shop" /></div>
+          </div>
+
+          <div className="ge-field">
+            <label>Lifestyle photo (right column)</label>
+            <input value={premium.lifestyleImage || ''} onChange={e => setPremium({ lifestyleImage: e.target.value })} placeholder="Paste an image URL…" />
+            <div className="ge-editrow">
+              <label className="ge-upload"><Upload size={13} /> Upload from device
+                <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => { const f = e.target.files && e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => setPremium({ lifestyleImage: r.result }); r.readAsDataURL(f); }} />
+              </label>
+              {premium.lifestyleImage && <button className="ge-clear" onClick={() => setPremium({ lifestyleImage: '' })}>Remove photo</button>}
+            </div>
+          </div>
+
+          <h3 style={{ marginTop: 22 }}>Floating products</h3>
+          {premiumProducts.map((prod, i) => (
+            <div key={i} style={{ border: '1px solid var(--line)', borderRadius: 14, padding: 16, marginBottom: 14 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                <b style={{ fontFamily: "'Outfit',sans-serif" }}>Product {i + 1}</b>
+                <button className="ge-tblbtn danger" onClick={() => removePremiumProduct(i)}><Trash2 size={12} /> Remove</button>
+              </div>
+              <div className="ge-field">
+                <label>Photo</label>
+                <input value={prod.image || ''} onChange={e => updatePremiumProduct(i, { image: e.target.value })} placeholder="Paste an image URL…" />
+                <div className="ge-editrow">
+                  <label className="ge-upload"><Upload size={13} /> Upload from device
+                    <input type="file" accept="image/*" style={{ display: 'none' }} onChange={e => { const f = e.target.files && e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => updatePremiumProduct(i, { image: r.result }); r.readAsDataURL(f); }} />
+                  </label>
+                  {prod.image && <button className="ge-clear" onClick={() => updatePremiumProduct(i, { image: '' })}>Remove photo</button>}
+                </div>
+              </div>
+              <div className="ge-field" style={{ marginBottom: 0 }}><label>Label (optional)</label><input value={prod.label || ''} onChange={e => updatePremiumProduct(i, { label: e.target.value })} /></div>
+            </div>
+          ))}
+
+          <button className="ge-addtile" style={{ minHeight: 70, marginBottom: 22 }} onClick={addPremiumProduct}><Plus size={20} /><span>Add product</span></button>
+
+          <button className="ge-primary" style={{ maxWidth: 200 }} onClick={saveHero}>{savedTab === 'Hero' ? 'Saved ✓' : 'Save showcase'}</button>
         </div>
       )}
 

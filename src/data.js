@@ -82,6 +82,7 @@ export const DEFAULT_CONTENT = {
   topbar: { promo: '🌿 100% original · clean beauty & personal care · delivery: Dhaka 2 days, outside 3–5 days', hotline: '16xxx' },
   hero: {
     overlayOpacity: 0,
+    layout: 'banner',
     slides: [
       {
         image: 'https://picsum.photos/1200/700?random=101',
@@ -91,6 +92,15 @@ export const DEFAULT_CONTENT = {
         cta: 'Shop skincare',
       },
     ],
+    premium: {
+      eyebrow: 'Limited time',
+      title: 'Power your home the smart way.',
+      subtitle: 'Premium energy gear, curated for real savings — with fast delivery nationwide.',
+      cta: 'Shop the sale',
+      ctaLink: '/shop',
+      lifestyleImage: '',
+      products: [],
+    },
   },
   homepage: {
     concernLabel: 'Shop by concern',
@@ -130,3 +140,4 @@ export const blankProduct = () => ({
 });
 
 export const blankHeroSlide = () => ({ image: '', eyebrow: '', title: 'New headline', subtitle: '', cta: '' });
+export const blankHeroProduct = () => ({ image: '', label: '' });

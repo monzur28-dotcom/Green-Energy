@@ -76,6 +76,30 @@ a{color:inherit}
 .ge-herotext p{color:#dcf1e6;margin-top:13px;font-size:15px;max-width:440px}
 .ge-herotext .cta{margin-top:22px;background:#fff;color:var(--green-d);border:0;padding:13px 24px;border-radius:30px;font-weight:600;font-family:'Outfit',sans-serif;font-size:15px;cursor:pointer;align-self:flex-start;text-decoration:none;display:inline-block}
 
+/* ---- premium composited hero (alternate style, admin-selectable) ---- */
+@keyframes ge-fadein{from{opacity:0}to{opacity:1}}
+@keyframes ge-rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes ge-clouddrift{from{transform:translateX(-6%)}to{transform:translateX(6%)}}
+.ge-herop{position:relative;width:100%;min-height:450px;height:620px;border-radius:20px;overflow:hidden;margin-bottom:24px;background:linear-gradient(135deg,var(--green-d) 0%,var(--green) 55%,var(--green-2) 100%);display:grid;grid-template-columns:1fr 1.3fr 1fr;align-items:center;box-shadow:0 20px 50px rgba(10,47,28,.28);animation:ge-fadein .9s ease}
+.ge-herop-clouds{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.ge-herop-clouds .c{position:absolute;border-radius:50%;background:rgba(255,255,255,.1);filter:blur(6px)}
+.ge-herop-clouds .c1{width:260px;height:260px;top:-60px;left:5%;animation:ge-clouddrift 22s ease-in-out infinite alternate}
+.ge-herop-clouds .c2{width:180px;height:180px;top:40%;left:60%;animation:ge-clouddrift 28s ease-in-out infinite alternate-reverse}
+.ge-herop-clouds .c3{width:220px;height:220px;bottom:-70px;left:30%;animation:ge-clouddrift 26s ease-in-out infinite alternate}
+.ge-herop-panel{position:relative;z-index:2;margin:32px;padding:30px 26px;background:rgba(255,255,255,.14);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.25);border-radius:18px;color:#fff}
+.ge-herop-eyebrow{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#f3d98a;font-weight:600;margin-bottom:10px}
+.ge-herop-panel h1{font-size:clamp(24px,2.6vw,34px);font-weight:700;line-height:1.1;margin:0 0 12px;letter-spacing:-.01em}
+.ge-herop-panel p{color:#dcf1e6;font-size:14px;margin:0 0 20px;max-width:320px}
+.ge-herop-cta{display:inline-block;background:#fff;color:var(--green-d);border:0;padding:13px 26px;border-radius:30px;font-weight:600;font-family:'Outfit',sans-serif;font-size:14.5px;text-decoration:none;transition:transform .3s ease,box-shadow .3s ease}
+.ge-herop-cta:hover{transform:scale(1.06);box-shadow:0 10px 24px rgba(0,0,0,.2)}
+.ge-herop-products{position:relative;z-index:1;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:18px;padding:20px;height:100%}
+.ge-herop-product{width:110px;display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:ge-rise .7s ease forwards;animation-delay:var(--d,0s)}
+.ge-herop-product img{width:100%;aspect-ratio:1;object-fit:contain;filter:drop-shadow(0 18px 20px rgba(0,0,0,.35));background:rgba(255,255,255,.9);border-radius:14px;padding:10px}
+.ge-herop-product span{font-size:11.5px;color:#fff;text-align:center;font-weight:600}
+.ge-herop-lifestyle{position:relative;z-index:1;height:100%;overflow:hidden}
+.ge-herop-lifestyle img{width:100%;height:100%;object-fit:cover;display:block}
+@media(prefers-reduced-motion:reduce){.ge-herop-product{opacity:1;animation:none}}
+
 .ge-concern{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:22px}
 .ge-concern .lab{font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;margin-bottom:11px;display:flex;align-items:center;gap:7px}
 .ge-cchips{display:flex;gap:8px;flex-wrap:wrap}
@@ -349,6 +373,8 @@ a{color:inherit}
 }
 @media(max-width:900px){
   .ge-hero{aspect-ratio:1.5}
+  .ge-herop{height:500px}
+  .ge-herop-product{width:88px}
   .ge-trust{grid-template-columns:repeat(2,1fr)}
   .ge-brandstrip{grid-template-columns:repeat(3,1fr)}
   .ge-grid{grid-template-columns:repeat(3,1fr)}
@@ -362,6 +388,11 @@ a{color:inherit}
 }
 @media(max-width:560px){
   .ge-hero{aspect-ratio:1.05}
+  .ge-herop{grid-template-columns:1fr;height:auto;min-height:450px}
+  .ge-herop-panel{margin:20px;text-align:center}
+  .ge-herop-panel p{max-width:none;margin-left:auto;margin-right:auto}
+  .ge-herop-products{overflow-x:auto;flex-wrap:nowrap;justify-content:flex-start;padding:16px 20px}
+  .ge-herop-lifestyle{height:220px}
   .ge-grid{grid-template-columns:repeat(2,1fr)}
   .ge-search{order:3;flex-basis:100%}
   .ge-hrow{flex-wrap:wrap}
